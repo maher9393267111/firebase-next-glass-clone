@@ -27,8 +27,19 @@ const CreateProducts = () => {
   const [selectedcategory, setselectedcategory] = useState("");
   const [fileurl, setfileurl] = useState("");
   const [images, setImages] = useState([]);
+  const [imageColor,setImagecolor] = useState("");
 
   const handleimages = async (e) => {
+
+if (imageColor === "") {
+console.log("imageColor is empty");
+  return
+}
+
+else {
+  console.log("imageColor is not empty");
+
+
     const file = e.target.files[0];
     console.log(file);
     // generate a random string
@@ -46,8 +57,13 @@ const CreateProducts = () => {
     const down = await getDownloadURL(testRef);
     //setproductimage(down);
 
-    setImages([...images, down]);
+    setImages([...images, { image: down, color:imageColor }]);
   };
+  
+  }
+  
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +75,9 @@ const CreateProducts = () => {
     };
 
     const docRef = await addDoc(collection(db, "products"), product);
-  };
+  }
+
+  
 
   return (
     <div>
@@ -83,6 +101,15 @@ const CreateProducts = () => {
 
       <input onChange={handleimages} type="file" multiple={true} />
 
+<div>
+  <h1>image color  { imageColor}</h1>
+</div>
+      <input
+      
+      onChange={(e) => setImagecolor(e.target.value)}
+      
+      type="text"  />
+
       {images.length}
 
       {/* <button
@@ -97,7 +124,7 @@ onClick={uploadImages}
             return (
               <img
                 className="w-12 h-12 rounded-full object-cover"
-                src={image}
+                src={image.image}
                 alt=""
               />
             );
@@ -105,15 +132,17 @@ onClick={uploadImages}
         </div>
       </div>
 
-<div>
-  <button
-  onClick={handleSubmit}
-  
-  >create</button>
-</div>
+      <div>
+        <button onClick={handleSubmit}>create</button>
+      </div>
 
 
-    </div>
+
+  </div>
+
+
+
+    
   );
 };
 
