@@ -2,10 +2,25 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import CompliteList from '../components/completeList'
+import { countState, userState  } from '../recoil/listState';
+import { useSetRecoilState,useRecoilState  } from 'recoil';
+
+
+//import NewList from '../components/newList'
 
 export default function Home() {
+
+const [ count, setCount ] = useRecoilState(countState);
+const [ user, setUser ] = useRecoilState(userState);
+console.log(user)
+
+const changename = () => {
+
+setUser({ ...user, name: 'name is changed' })
+
+}
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,9 +36,19 @@ export default function Home() {
      > next app</div>
 
 
+<button
+onClick={changename}
+>chnage name</button>
+
+<p>
+  {user.name}
+</p>
+
+
+
 <div>
 
-<CompliteList/>
+{/* <NewList/> */}
 
 </div>
 
