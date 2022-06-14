@@ -1,24 +1,45 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { countState, userState  } from '../recoil/listState';
 import { useSetRecoilState,useRecoilState  } from 'recoil';
+import Modal from "react-modal";
 
 
-//import NewList from '../components/newList'
+import NewList from '../components/newList'
 
 export default function Home() {
 
 const [ count, setCount ] = useRecoilState(countState);
 const [ user, setUser ] = useRecoilState(userState);
-console.log(user)
+const [open, setOpen] = useState(false);
 
-const changename = () => {
+const [isSSR, setIsSSR] = useState(true);
 
-setUser({ ...user, name: 'name is changed' })
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
 
-}
+
+
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    with:'50%',
+    height:'400px',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+
+
+
 
 
   return (
@@ -31,26 +52,10 @@ setUser({ ...user, name: 'name is changed' })
 
     
 
-     <div
-     className=' bg-gray-500'
-     > next app</div>
+     
 
+  { !isSSR &&  <NewList />}
 
-<button
-onClick={changename}
->chnage name</button>
-
-<p>
-  {user.name}
-</p>
-
-
-
-<div>
-
-{/* <NewList/> */}
-
-</div>
 
 
 

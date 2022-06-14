@@ -13,7 +13,10 @@
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "recoil": "^0.7.3"
+    "react-modal": "^3.15.1",
+    "recoil": "^0.7.3",
+    "zustand": "^4.0.0-rc.1",
+    "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
