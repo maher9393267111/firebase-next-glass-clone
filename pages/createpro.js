@@ -1,101 +1,120 @@
-import React from 'react';
+import React from "react";
 import { useState, useRef } from "react";
 import { db, storage } from "../firebase";
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadString,getStorage } from "firebase/storage";
-
-
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import {
+  getDownloadURL,
+  ref,
+  uploadString,
+  getStorage,
+  uploadBytes,
+} from "firebase/storage";
+import { async } from "@firebase/util";
 
 const CreateProducts = () => {
+  const [productinfo, setProductinfo] = useState("");
+  const [productname, setProductname] = useState("");
+  const [productprice, setProductprice] = useState("");
 
-    const [productinfo, setProductinfo] = useState("");
-    const [productimage, setproductimage] = useState("");
-    const [childtcategory, setchildcategory] = useState([]);
-    const [selectedcategory, setselectedcategory] = useState("");
-  
-    const [images, setImages] = useState([]);
+  const [productimagesurl, setproductimagesurl] = useState("");
+  const [childtcategory, setchildcategory] = useState([]);
+  const [selectedcategory, setselectedcategory] = useState("");
+  const [fileurl, setfileurl] = useState("");
+  const [images, setImages] = useState([]);
 
+  const handleimages = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    // generate a random string
+    const random =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15);
 
+    const testRef = ref(storage, `PRODUCTS/${random}`);
 
+    await uploadBytes(testRef, file).then((snapshot) => {
+      console.log("Uploaded image to storage success!");
+    });
 
+    // get image url from storage and set into state
+    const down = await getDownloadURL(testRef);
+    //setproductimage(down);
 
-    const handleImageChange = async (e) => {
+    setImages([...images, down]);
+  };
 
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // multiple images  change to object url
-          let reader = new FileReader();
-          let files = e.target.files;
-          console.log('files', files)
-          for (let i = 0; i < files.length; i++) {
-            reader.readAsDataURL(files[i]);
-            reader.onload = () => {
-              // setImages({
-              //   ...images,
-              //   [files[i].name]: reader.result
-              // });
-        
-              setImages([...images, reader.result]);
-              console.log('images', images)
-             
-            }
-          }
-        
-//---------------------------------------------------------------------------------------------------------------------
+    const product = {
+      name: productname,
+      price: productprice,
+      images: images,
+    };
 
-        // const file = e.target.files[0];
-        // console.log(file);
-    
-        // const storage = getStorage();
-        // const testRef = ref(storage, `childcategories/${file.name}`);
-        // console.log("testRef", testRef);
-        // // send image file to storage with test ref info
-        // await uploadBytes(testRef, file).then((snapshot) => {
-        //   console.log("Uploaded image to storage success!");
-        // });
-    }
+    const docRef = await addDoc(collection(db, "products"), product);
+  };
 
+  return (
+    <div>
+      <div>
+        <h1>name</h1>
+        <input onChange={(e) => setProductname(e.target.value)} type="text" />
+      </div>
 
-// send array of images to storage and get url
+      <div>
+        <h1>price</h1>
+        <input
+          onChange={(e) => setProductprice(e.target.value)}
+          type="number"
+        />
+      </div>
 
-const uploadImages = async () => {
+      <div>
+        <h1>product category</h1>
+        <input onChange={(e) => setProductname(e.target.value)} type="text" />
+      </div>
 
-for (let i = 0; i < images.length; i++) {
+      <input onChange={handleimages} type="file" multiple={true} />
 
-  const storage = getStorage();
-  const testRef = ref(storage, `productimagesarray/image${i}`);
-  console.log("testRef", testRef);
-  // send image file to storage with test ref info
-  await  uploadString(testRef, images[i], "data_url").then((snapshot) => {
-    console.log("Uploaded image to storage success!");
-  });
-}
+      {images.length}
 
-
-}
-
-
-
-
-    return (
-        <div>
-            
-<input
-onChange={handleImageChange}
-type="file" multiple={true} />
-
-
-{images.length}
-
-<button
+      {/* <button
 
 onClick={uploadImages}
->upoad images</button>
+>upoad images</button> */}
 
-
-
+      <div>
+        images
+        <div className=" flex  gap-9">
+          {images.map((image, index) => {
+            return (
+              <img
+                className="w-12 h-12 rounded-full object-cover"
+                src={image}
+                alt=""
+              />
+            );
+          })}
         </div>
-    );
-}
+      </div>
+
+<div>
+  <button
+  onClick={handleSubmit}
+  
+  >create</button>
+</div>
+
+
+    </div>
+  );
+};
 
 export default CreateProducts;
