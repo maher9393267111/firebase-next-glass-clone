@@ -1,6 +1,8 @@
 import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
+    GithubAuthProvider,
+    FacebookAuthProvider,
     onAuthStateChanged,
     sendPasswordResetEmail,
     signInWithEmailAndPassword,
@@ -57,7 +59,22 @@ import {
       return  signOut(auth);
     };
   
+    // sign with google
+    const signInWithGoogle = () => {
+      const provider = new GoogleAuthProvider();
+      return signInWithPopup(auth, provider);
+    }
 
+    // sign with github
+    const signInWithGithub = () => {
+      const provider = new GithubAuthProvider();
+      return signInWithPopup(auth, provider);
+    }
+
+    // sign with facebook
+    const signInWithFacebook = () => {
+      return signInWithPopup(auth, FacebookAuthProvider);
+    }
 
 
 
@@ -90,6 +107,9 @@ import {
       logout,
       currentUser,
       userinfo,
+      signInWithGoogle,
+      signInWithGithub,
+      signInWithFacebook,
     };
     return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
   };
