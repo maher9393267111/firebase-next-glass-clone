@@ -2,10 +2,14 @@ import React from "react";
 import { useAuth } from "../context/global";
 import { Col, Row } from "antd";
 import { useState, useEffect } from "react";
+
+import {diffcontext } from '../context/diff';
+
 const Navbar = () => {
   const { currentUser } = useAuth();
 
   const [active, setActive] = useState("home");
+  const { show,setShow } = diffcontext();
 
   return (
     <div>
@@ -91,12 +95,16 @@ const Navbar = () => {
 
                     <div className=" pt-[10px]">
                       <div>
-                        <div className=" flex gap-2  justify-center">
-                          <p>filter
+                        <div 
+                          onClick={() => setShow(true)}
+                        className=" flex gap-2   cursor-pointer justify-center">
+                          <p
+                        
+                          
+                          >filter
 
 
 
-                            
                           </p>
                           <p>
                             <img

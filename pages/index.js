@@ -14,7 +14,7 @@ export default function Home() {
 
 
 const [open, setOpen] = useState(false);
-const { show,setShow } = diffcontext();
+
 
 
 const { logout  } = useAuth();
@@ -52,7 +52,7 @@ type="primary">Text Button</Button>
 </div>
 
 
-{show ? <div>Modal open</div> : <div>Modal closed</div>}
+
      
 
  
