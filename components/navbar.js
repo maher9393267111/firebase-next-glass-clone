@@ -10,12 +10,12 @@ const Navbar = () => {
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
   const { currentUser, logout,userinfo } = useAuth();
-  console.log("navbar  image user------>", currentUser.photoURL);
+  
 
   return (
     <div>
       <div>
-        {userinfo?.name}
+        {/* {userinfo?.name} */}
         <Row className="  ml-8 min-h-[78px]   shadow-xl">
           <Col className="  " span={12}>
             <div>
@@ -45,7 +45,8 @@ const Navbar = () => {
                             : "text-gray-500"
                         }`}
                       >
-                        Home{currentUser?.email}
+                        Home   
+                        {/* {currentUser?.email} */}
                       </li>
                       <li
                         onClick={() => setActive("shop")}

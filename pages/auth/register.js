@@ -4,7 +4,9 @@ import { BsGithub } from "react-icons/bs";
 import { useAuth } from "../../context/global";
 import {useState,useEffect} from "react";
 import {auth,db} from "../../firebase";
-import {    createUserWithEmailAndPassword,updateProfile} from 'firebase/auth'
+import Link from "next/link";
+import { useRouter } from 'next/router'
+import { createUserWithEmailAndPassword,updateProfile} from 'firebase/auth'
 import {doc,setDoc,getDoc,addDoc,collection} from "firebase/firestore";
 
 const Register = () => {
@@ -13,11 +15,23 @@ const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [name, setName] = useState("");
 
+const router = useRouter()
 
 
-    const {  userinfo, signUp,signInWithGithub, signInWithGoogle,logout,currentUser } = useAuth();
+    const {  userinfo, signUp,signInWithGithub, signInWithGoogle,logout,currentUser,reg,setreg } = useAuth();
+
+    
 
 
+// redirect if currents user object isn't empty
+
+useEffect(() => {
+    if (currentUser?.email !== undefined) {
+     //  console.log("currentUser", currentUser);
+        router.push("/");
+    }
+}
+, [currentUser]);
 
 
 
@@ -38,6 +52,7 @@ const handleSubmit = async (e) => {
 
    
     // add the user to the users collection
+
     await setDoc(doc(db, "users", email), {
       watchList: [],
       name: name,
@@ -50,6 +65,10 @@ const handleSubmit = async (e) => {
     });
   };
 
+   setreg(true)
+  console.log('registerwithinputs',reg)
+  // save in local storage
+    localStorage.setItem('reg--->', reg)
 
 
 
@@ -57,7 +76,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="  register">
-  email{email}    pass{password}   name  {name } 
+  
       <div className=" w-[73%]  lg:min-h-[355px]  border-2 border-blue-700  mx-auto mt-14   sm:min-h-[355px] sm:h-auto">
         {/* ---content--- */}
         <div>
@@ -197,7 +216,13 @@ const handleSubmit = async (e) => {
 
 
 <div>
-    <button>Sign in</button>
+    <button>
+        
+       <Link href="/auth/login">
+       Sign in
+        </Link> 
+        
+       </button>
 </div>
 
 

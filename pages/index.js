@@ -10,6 +10,7 @@ import {diffcontext } from '../context/diff';
 
 
 
+
 export default function Home() {
 
 
@@ -17,7 +18,7 @@ const [open, setOpen] = useState(false);
 
 
 
-const { logout  } = useAuth();
+const { logout ,forgetPassword  } = useAuth();
 const [isSSR, setIsSSR] = useState(true);
   useEffect(() => {
     setIsSSR(false);
@@ -27,8 +28,13 @@ const [isSSR, setIsSSR] = useState(true);
 
 
 
+  const sendtoemail = (e) => {
+e.preventDefault();
+const email = 'maher9911133@gmail.com'
+    forgetPassword(email);
 
 
+  }
 
 
 
@@ -46,7 +52,7 @@ const [isSSR, setIsSSR] = useState(true);
 
 <div>
 <Button
-onClick={() => setShow(true)}
+onClick={sendtoemail }
 
 type="primary">Text Button</Button>
 </div>
