@@ -29,33 +29,37 @@ import {
   const AuthContext = ({ children }) => {
     const [currentUser, setUser] = useState({});
     const [userinfo, setUserinfo] = useState({});
-  
-    const signUp = async (email, password, name, image) => {
+    const {registerwithinputs,setregisterwithinputs} = useState(false);
+
+
+
+    const signUp = async (email, password,name) => {
       createUserWithEmailAndPassword(auth, email, password);
   
-      // await updateProfile(auth, {
-      //     displayName: name,
-      //     photoURL: image
-      //     });
+  console.log('signUp',email, password,name)
+
   
-      // set rules read and write if true
-      // create  collection name is users --> doc name(id) is user gmail  ----> data is empty array wishlist
-      return setDoc(doc(db, "users", email), {
-        name: name,
-        role: "user",
-        watchList: [],
-        image: image ? image : 'https://cdn4.iconfinder.com/data/icons/office-thick-outline/36/office-14-256.png',
-        email: email,
-        password: password,
-        cart: [],
-        onder: [],
-      });
-    };
+
+
+  
+};
+
+
+
+    
+
+   
+
+
+
+
     const signIn = (email, password) => {
       return signInWithEmailAndPassword(auth, email, password);
     };
   
     const logout = () => {
+      console.log("logout");
+      setUser({});
       return  signOut(auth);
     };
   
@@ -87,11 +91,22 @@ import {
           console.log("user status changed: ", user.email, user.uid);
   
           async function fetchuser() {
-            if (currentUser) {
-              await getDoc(doc(db, "users", currentUser.email)).then((res) => {
-                console.log(res.data());
-                setUserinfo(res.data());
-              });
+            if (user) {
+              console.log(`currentUser: ${user.email}`);
+
+
+await getDoc(doc(db, "users", user.email)).then((userdata) => {
+
+//console.log('userdata',userdata)
+  setUserinfo(userdata.data());
+  console.log('userinf------->>>',userinfo);
+
+}
+)
+
+
+
+            
             }
           }
   
@@ -99,7 +114,7 @@ import {
         }
       });
       return unsubscribe;
-    }, [currentUser]);
+    }, [currentUser,auth]);
   
     const value = {
       signUp,
@@ -110,6 +125,7 @@ import {
       signInWithGoogle,
       signInWithGithub,
       signInWithFacebook,
+      createUserWithEmailAndPassword
     };
     return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
   };

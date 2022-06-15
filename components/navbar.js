@@ -1,19 +1,21 @@
 import React from "react";
-import { useAuth } from "../context/global";
+import { useAuth, currentUser } from "../context/global";
 import { Col, Row } from "antd";
 import { useState, useEffect } from "react";
-
-import {diffcontext } from '../context/diff';
+import Link from "next/link";
+import { diffcontext } from "../context/diff";
+import { useGetRecoilValueInfo_UNSTABLE } from "recoil";
 
 const Navbar = () => {
-  const { currentUser } = useAuth();
-
   const [active, setActive] = useState("home");
-  const { show,setShow } = diffcontext();
+  const { show, setShow } = diffcontext();
+  const { currentUser, logout,userinfo } = useAuth();
+  console.log("navbar  image user------>", currentUser.photoURL);
 
   return (
     <div>
       <div>
+        {userinfo?.name}
         <Row className="  ml-8 min-h-[78px]   shadow-xl">
           <Col className="  " span={12}>
             <div>
@@ -43,7 +45,7 @@ const Navbar = () => {
                             : "text-gray-500"
                         }`}
                       >
-                        Home
+                        Home{currentUser?.email}
                       </li>
                       <li
                         onClick={() => setActive("shop")}
@@ -95,17 +97,11 @@ const Navbar = () => {
 
                     <div className=" pt-[10px]">
                       <div>
-                        <div 
+                        <div
                           onClick={() => setShow(true)}
-                        className=" flex gap-2   cursor-pointer justify-center">
-                          <p
-                        
-                          
-                          >filter
-
-
-
-                          </p>
+                          className=" flex gap-2   cursor-pointer justify-center"
+                        >
+                          <p>filter</p>
                           <p>
                             <img
                               className="  w-6 h-6"
@@ -163,27 +159,68 @@ const Navbar = () => {
                 {/* auth- */}
 
                 <div className=" w-[35%]">
-                  <div className=" flex gap-6">
-                    <div>
-                      <button
-                        type="button"
-                        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                      >
-                        Login
-                      </button>
-                    </div>
+                  {/* //----------------------------------------------- */}
 
-                    {/* -register- */}
+                  {!currentUser?.email ? (
+                    <div className=" flex gap-6">
+                      <div>
+                        <button
+                          type="button"
+                          class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                        >
+                          <Link href="/auth/login">
+                            <a className="text-white bg-gray-800 hover:bg-gray-900 ">
+                              Login
+                            </a>
+                          </Link>
+                        </button>
+                      </div>
 
-                    <div>
-                      <button
-                        type="button"
-                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                      >
-                        Register
-                      </button>
+                      {/* -register- */}
+
+                      <div>
+                        <button
+                          type="button"
+                          class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        >
+                          <Link className=" " href="/auth/register">
+                            <a className="   text-blue-700   ">Register</a>
+                          </Link>
+                        </button>
+                      </div>
+
+                      {/* //------------------------ */}
                     </div>
-                  </div>
+                  ) : (
+                    <div className=" flex gap-6">
+                      <div> 
+
+                      <button
+                     onClick={logout}
+                      
+                      type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Logout</button>
+
+
+                      </div>
+
+                      <div>
+                        <div className="  relative    -top-2">
+                          <div>
+
+                          
+                        <img
+                          className="w-8 h-8  mx-auto rounded-full"
+                          src={currentUser?.photoURL} alt="" />
+                          </div>
+                          <p
+                          className="  font-bold   hover:text-blue-700  dark:hover:text-blue-700"
+                          >{currentUser?.displayName}</p>
+                        
+
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
