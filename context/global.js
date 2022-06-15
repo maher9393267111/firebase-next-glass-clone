@@ -77,14 +77,41 @@ const AuthContext = ({ children }) => {
   };
 
   // sign with github
-  const signInWithGithub = () => {
+  const signInWithGithub = async() => {
     const provider = new GithubAuthProvider();
-    return signInWithPopup(auth, provider);
+     signInWithPopup(auth, provider);
+
+
+     await setDoc(doc(db, "users", auth.currentUser.email), {
+      watchList: [],
+      name: auth.currentUser.displayName,
+      role: "user",
+      image: auth.currentUser.photoURL,
+      email: auth.currentUser.email,
+        password: "",
+        cart: [],
+        order: [],
+    });
+  
+
+
+
   };
 
   // sign with facebook
-  const signInWithFacebook = () => {
-    return signInWithPopup(auth, FacebookAuthProvider);
+  const signInWithFacebook =async () => {
+    await signInWithPopup(auth, FacebookAuthProvider);
+    await setDoc(doc(db, "users", auth.currentUser.email), {
+      watchList: [],
+      name: auth.currentUser.displayName,
+      role: "user",
+      image: auth.currentUser.photoURL,
+      email: auth.currentUser.email,
+        password: "",
+        cart: [],
+        order: [],
+    });
+  
   };
 
 
@@ -113,16 +140,16 @@ const forgetPassword = (email) => {
         // User is signed in.
 
         setUser(user);
-        console.log("user status changed: ", user.email, user.uid);
+      //  console.log("user status changed: ", user.email, user.uid);
 
         async function fetchuser() {
           if (user) {
-            console.log(`currentUser: ${user.email}`);
+          //  console.log(`currentUser: ${user.email}`);
 
             await getDoc(doc(db, "users", user.email)).then((userdata) => {
               //console.log('userdata',userdata)
               setUserinfo(userdata.data());
-              console.log("userinf------->>>", userinfo);
+            //  console.log("userinf------->>>", userinfo);
             });
           }
         }
@@ -132,6 +159,11 @@ const forgetPassword = (email) => {
     });
     return unsubscribe;
   }, [currentUser, auth]);
+
+
+
+
+
 
   const value = {
     signUp,

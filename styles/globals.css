@@ -13,3 +13,25 @@
   .bg-overlay{
   background-color:   rgba(255, 255, 255, 0.75)
   }
+
+
+  .scrollnav{
+
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+transition:  all 0.5s ease-in-out;
+
+
+
+  }
+
+
+  .ant-drawer-content-wrapper{
+    transition: all 2.5s ease-in-out;
+  }
+
+  .ant-drawer{
+    transition: all 2.5s ease-in-out;
+  }

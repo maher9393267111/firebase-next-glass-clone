@@ -6,17 +6,47 @@ import Link from "next/link";
 import { diffcontext } from "../context/diff";
 import { useGetRecoilValueInfo_UNSTABLE } from "recoil";
 
+
 const Navbar = () => {
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
   const { currentUser, logout,userinfo } = useAuth();
+  const [addfixed, setAddfixed] = useState('');
+  const {showDrawer, onClose} = diffcontext();
+
+  useEffect(() => {
+
+
+  const  scrollfunction = () => {
+    if(window.scrollY > 100){
+      console.log("addfixed",addfixed);
+      setAddfixed('scrollnav');
+    }
+
+    else{
+      console.log("remove fixed",addfixed);
+      setAddfixed('');
+    }
+  }
+
+  window.addEventListener('scroll',scrollfunction);
+
+    
+
+
+  }, []);
   
 
+
+
+
+
+
   return (
-    <div>
+    <div className=" ">
       <div>
         {/* {userinfo?.name} */}
-        <Row className="  ml-8 min-h-[78px]   shadow-xl">
+        <Row className={ `  ${addfixed}  ml-8 min-h-[78px]  transition-all  duration-200   shadow-xl`}>
           <Col className="  " span={12}>
             <div>
               <div className="  pt-[46px]">
@@ -147,6 +177,7 @@ const Navbar = () => {
 
                         <div className="ml-2">
                           <img
+                          onClick={showDrawer }
                             className="w-8 h-8"
                             src="https://cdn1.iconfinder.com/data/icons/shopping-346/24/buy-bag-cart-shop-shopping-256.png"
                             alt=""

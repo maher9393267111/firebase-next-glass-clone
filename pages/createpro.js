@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 import { db, storage } from "../firebase";
 import {
   addDoc,
   collection,
   doc,
+ 
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -15,12 +16,15 @@ import {
   getStorage,
   uploadBytes,
 } from "firebase/storage";
-import { async } from "@firebase/util";
+
+import { useAuth } from "../context/global";
 
 const CreateProducts = () => {
   const [productinfo, setProductinfo] = useState("");
   const [productname, setProductname] = useState("");
   const [productprice, setProductprice] = useState("");
+  const [productTitle, setProductTitle] = useState("Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat placeat similique dicta nulla praesentium deserunt. Corporis repellendus deleniti dolores eligendi.");
+  const [productBrand, setProductBrand] = useState("");
 
   const [productimagesurl, setproductimagesurl] = useState("");
   const [childtcategory, setchildcategory] = useState([]);
@@ -28,6 +32,25 @@ const CreateProducts = () => {
   const [fileurl, setfileurl] = useState("");
   const [images, setImages] = useState([]);
   const [imageColor,setImagecolor] = useState("");
+  const [productsize, setProductsize] = useState([]);
+  
+const {userinfo} = useAuth();
+console.log("userinfo",userinfo.role);
+
+// if  userinfo role is admin then only he can create product else redirect to home page
+
+useEffect(() => {
+  console.log("userinfo",userinfo.role);
+
+  if(userinfo.role == "user"){
+    console.log("userinfo",userinfo.role);
+    window.location.href = "/";
+  }
+}
+,[userinfo]);
+
+
+
 
   const handleimages = async (e) => {
 
@@ -72,15 +95,58 @@ else {
       name: productname,
       price: productprice,
       images: images,
+      title: productTitle,
+       category: selectedcategory,
     };
 
-    const docRef = await addDoc(collection(db, "products"), product);
+
+    console.log("product------>",product);
+
+     await addDoc(collection(db, "products",), product);
   }
 
   
 
+
+
+  const updateproduct= async (e) => {
+    e.preventDefault();
+
+    const product = {
+      name: 'maher update',
+      // price: productprice,
+      // images: images,
+      // title: productTitle,
+      // category: selectedcategory,
+    };
+
+    //const docRef = await updateDoc(collection(db, "products",'xs2WvmUUAcTroHxzYqzj'), product);
+
+    await updateDoc(doc(db, "products", 'mAQUarQSsvFMmqOz34sR'), {
+      username: 'maher',
+      title: 'maher update'
+  }).then(() => {
+      console.log("Document successfully updated!");
+  }
+  ).catch(error => {
+
+      console.log("Error updating document: ", error);
+  }
+  );
+
+
+  }
+
+
+
+
   return (
-    <div>
+    <div className="  w-[420px]  h-auto mx-auto mt-12  font-bold">
+      <div
+      onClick={updateproduct}
+      className=""
+      
+      >update product</div>
       <div>
         <h1>name</h1>
         <input onChange={(e) => setProductname(e.target.value)} type="text" />
@@ -96,7 +162,7 @@ else {
 
       <div>
         <h1>product category</h1>
-        <input onChange={(e) => setProductname(e.target.value)} type="text" />
+        <input onChange={(e) => setselectedcategory(e.target.value)} type="text" />
       </div>
 
       <input onChange={handleimages} type="file" multiple={true} />
@@ -133,7 +199,13 @@ onClick={uploadImages}
       </div>
 
       <div>
-        <button onClick={handleSubmit}>create</button>
+
+      <button
+       onClick={handleSubmit}
+      
+      type="button" class="focus:outline-none mt-6 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create</button>
+
+        
       </div>
 
 

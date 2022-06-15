@@ -6,6 +6,7 @@ import Navbar from '../components/navbar';
 import 'antd/dist/antd.css';
 import FilterModal from '../components/filterModal';
 import AllContext from '../context/diff';
+import Cartbar from '../components/cartbar';
 function MyApp({ Component, pageProps }) {
 
 return (
@@ -16,6 +17,7 @@ return (
         <AllContext>
       
         <Navbar/>
+      <Cartbar/>
         <FilterModal/>
   <Component {...pageProps} />
 
