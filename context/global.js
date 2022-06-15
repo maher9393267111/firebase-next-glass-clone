@@ -14,7 +14,7 @@ import {
 
 } from "firebase/auth";
 
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
@@ -31,6 +31,7 @@ const AuthContext = ({ children }) => {
   const [currentUser, setUser] = useState({});
   const [userinfo, setUserinfo] = useState({});
   const [ reg, setreg ] = useState(false);
+  const [products, setProducts] = useState([])
 
 
   const signUp = async (email, password, name) => {
@@ -68,6 +69,12 @@ const AuthContext = ({ children }) => {
       cart: [],
       order: [],
   });
+
+
+
+  
+
+
 
 
 
@@ -177,7 +184,8 @@ const forgetPassword = (email) => {
     createUserWithEmailAndPassword,
     reg,
     setreg,
-    forgetPassword 
+    forgetPassword ,
+    products,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

@@ -33,6 +33,7 @@ const CreateProducts = () => {
   const [images, setImages] = useState([]);
   const [imageColor,setImagecolor] = useState("");
   const [productsize, setProductsize] = useState([]);
+  const [success, setSuccess] = useState(false);
   
 const {userinfo} = useAuth();
 console.log("userinfo",userinfo.role);
@@ -102,8 +103,34 @@ else {
 
     console.log("product------>",product);
 
-     await addDoc(collection(db, "products",), product);
-  }
+     await addDoc(collection(db, "products",), product).then(() => {
+setSuccess(true);
+document.getElementById("product-form").reset();
+setImages([]);
+     }
+      ).catch((error) => {
+
+        setSuccess(false);
+      }
+      );
+        //  reset all the state
+
+
+
+
+
+  
+
+
+    
+    }
+  
+
+ 
+  
+
+
+
 
   
 
@@ -114,13 +141,10 @@ else {
 
     const product = {
       name: 'maher update',
-      // price: productprice,
-      // images: images,
-      // title: productTitle,
-      // category: selectedcategory,
+    
     };
 
-    //const docRef = await updateDoc(collection(db, "products",'xs2WvmUUAcTroHxzYqzj'), product);
+
 
     await updateDoc(doc(db, "products", 'mAQUarQSsvFMmqOz34sR'), {
       username: 'maher',
@@ -142,11 +166,10 @@ else {
 
   return (
     <div className="  w-[420px]  h-auto mx-auto mt-12  font-bold">
-      <div
-      onClick={updateproduct}
-      className=""
-      
-      >update product</div>
+    
+    <form id='product-form' className="form-control" onSubmit={handleSubmit}>
+
+   
       <div>
         <h1>name</h1>
         <input onChange={(e) => setProductname(e.target.value)} type="text" />
@@ -201,14 +224,15 @@ onClick={uploadImages}
       <div>
 
       <button
-       onClick={handleSubmit}
+      //  onClick={handleSubmit}
+      type="submit"
       
-      type="button" class="focus:outline-none mt-6 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create</button>
+       class="focus:outline-none mt-6 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create</button>
 
         
       </div>
 
-
+</form>
 
   </div>
 
