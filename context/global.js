@@ -190,40 +190,48 @@ const queryname ='kidrad'
  const collectionref =  query(collection(db, "products"), where("name", "==", `kidrad` ))
  
 
- var q1 = query(collection(db, "products"), where("name", "==", `kidrad` ))
+ var q1 = query(collection(db, "products"), where("name", "==", "PROt55" ))
 
-var q2 = query(collection(db, "products"), where("category", "==", `men` ))
-
-
+var q2 = query(collection(db, "products"), where("category", "==", "women" ))
 
 
 
- getDocs(q2)
+
+
+
+ getDocs(q1)
  .then(response => {
      const products = response.docs.map(doc => {
          return { id: doc.id, ...doc.data() }
      })
      console.log('QUERY{1}---------->',products)
      setQueryproducts(products)
+
      
  })
  .then(() => {
 
-  getDocs(q1)
+  getDocs(q2)
   .then(response => {
       const products = response.docs.map(doc => {
           return { id: doc.id, ...doc.data() }
       })
-      console.log('QURY{2}---------->',products)
+      console.log('QURY{2} all products---------->',products)
       setQueryproducts([...queryproducts, ...products])
+   
+    //  setQueryproducts([...queryproducts, products])
      
+   
     } ) } )
  
  
- .catch(err => {
-     console.log(err)
- }).finally(() => {
- })
+
+
+
+//  .catch(err => {
+//      console.log(err)
+//  }).finally(() => {
+//  })
 
 
 
