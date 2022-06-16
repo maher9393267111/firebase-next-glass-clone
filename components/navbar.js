@@ -55,14 +55,19 @@ const Navbar = () => {
                   <div className=" flex-1 sm:ml-6 self-center">
                     <ul className=" flex gap-6 navlist    ">
                       <li
-                        onClick={() => setActive("home")}
-                        className={`${
-                          active === "home"
-                            ? "text-gray-900 font-bold"
-                            : "text-gray-500"
-                        }`}
+                     
                       >
-                        Home
+                        <Link href="/">
+                          <a
+                             onClick={() => setActive("home")}
+                             className={`${
+                               active === "home"
+                                 ? "text-gray-900 font-bold"
+                                 : "text-gray-500"
+                             }`}
+                          >Home</a>
+                        
+                        </Link>
                         {/* {currentUser?.email} */}
                       </li>
                       <li
@@ -73,27 +78,50 @@ const Navbar = () => {
                             : "text-gray-500"
                         }`}
                       >
-                        Shop
+                        <Link href="/shop">
+                          <a
+                            onClick={() => setActive("shop")}
+                            className={`${
+                              active === "shop"
+                                ? "text-gray-900 font-bold"
+                                : "text-gray-500"
+                            }`}
+                          >Shop</a>
+                        </Link>
+                      
                       </li>
                       <li
-                        onClick={() => setActive("featured")}
-                        className={`${
-                          active === "featured"
-                            ? "text-gray-900 font-bold"
-                            : "text-gray-500"
-                        }`}
+                      
                       >
-                        Featured
+
+                        <Link href="/featured">
+                          <a
+                            onClick={() => setActive("featured")}
+                            className={`${
+                              active === "featured"
+                                ? "text-gray-900 font-bold"
+                                : "text-gray-500"
+                            }`}
+                          >Featured</a>
+                        </Link>
+                        
                       </li>
                       <li
-                        onClick={() => setActive("recomended")}
-                        className={`${
-                          active === "recomended"
-                            ? "text-gray-900 font-bold"
-                            : "text-gray-500"
-                        }`}
+                       
                       >
-                        Recommended
+                        <Link href="/recommended">
+                          <a
+                           onClick={() => setActive("recomended")}
+                           className={`${
+                             active === "recomended"
+                               ? "text-gray-900 font-bold"
+                               : "text-gray-500"
+                           }`}
+                          >Recommended</a>
+                        </Link>
+                           
+
+                        
                       </li>
                     </ul>
                   </div>

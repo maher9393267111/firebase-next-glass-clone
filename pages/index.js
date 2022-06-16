@@ -70,11 +70,26 @@ export default function Home() {
 <div className=" mt-12">
 
 
-<Showingproducts productsnumber={6} />
+<Showingproducts productsnumber={6}  title={'Home Products'} />
 
 
 
 </div>
+
+
+
+<div className=" mt-12 pb-12">
+
+
+<Showingproducts productsnumber={8}  title={'Recommended Products'} />
+
+
+
+</div>
+
+
+
+
 
 
 
