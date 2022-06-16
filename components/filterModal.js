@@ -21,6 +21,13 @@ const FilterModal = () => {
       };
 
 
+    const  handleChangeorder = (value) => {
+
+        console.log(`selected ${value}`);
+        setFilterarray({ ...filterarray, orderby:value})
+        console.log('filter------->',filterarray);
+
+    }
 
 
 
@@ -32,10 +39,6 @@ const { filterarray,setFilterarray} = useAuth();
         console.log(`selected ${value}`);
         setFilterarray({ ...filterarray, category:value})
         console.log('filter------->',filterarray);
-
-// if filterarray have category remove old category and add new category
-
-        
 
 
       };
@@ -91,7 +94,13 @@ const { filterarray,setFilterarray} = useAuth();
             <div className=' min-h-[140px] mx-auto ml-6'>
                 
 
+
+<div className=' flex gap-8'>
+
+
+
             <>
+
     <Select
       defaultValue="men"
       style={{
@@ -112,12 +121,48 @@ const { filterarray,setFilterarray} = useAuth();
   </>
 
 
+
+{/* // Order by filter- */}
+
 <>
 
+<Select
+  defaultValue="asc"
+  style={{
+    width: 120,
+  }}
+  onChange={handleChangeorder}
+>
+  <Option value="asc">from a-z</Option>
+  <Option value="desc">from z-a</Option>
+  <Option value="asc-price" > price increase </Option>
+  <Option value="desc-price" > price decrease </Option>
+
+
+</Select>
+
+
+
+</>
+
+
+
+
+
+
+
+  </div>
+
+
+<>
+
+<div className=' mt-20'>
+
+
+<>
 <div>
-
-
-<>
+<h3 className='text-gray-600 dark:text-white'>Filter Price</h3>
+</div>
       
       <Slider 
       onChange={onChange}

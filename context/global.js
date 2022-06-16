@@ -48,6 +48,7 @@ const AuthContext = ({ children }) => {
     category: "",
     minprice: 0,
     maxprice: 100000,
+    orderby: "",
   });
   const [filteredproducts, setFilteredproducts] = useState([]);
 
@@ -179,7 +180,8 @@ const AuthContext = ({ children }) => {
     if (
       filterarray.category == "" &&
       filterarray.minprice == 0 &&
-      filterarray.maxprice == 100000
+      filterarray.maxprice == 100000 &&
+      filterarray.orderby == ""
     ) {
      // console.log("filtered is null fetccccccccccch all");
 
@@ -218,7 +220,46 @@ where('category', '==' , `${filterarray.category}`)
       const maxprice = filterarray.maxprice  
       const minprice = filterarray.minprice  
 
- 
+
+// switch condition
+let filterprice 
+let filtername
+
+switch (filterarray.orderby) {
+  case "asc-price":
+    console.log("asc-price");
+   filterprice = orderBy("price", "asc"); 
+      filtername = orderBy("name", "asc");
+   
+  
+    break;
+
+  case "desc-price":
+
+    filterprice = orderBy("price", "asc"); 
+      filtername = orderBy("name", "asc");
+
+
+    break;
+    case "asc":
+      filterprice = orderBy("price", "asc");
+      filtername = orderBy("name", "asc");
+
+      break;
+    case "desc":
+      filterprice = orderBy("price", "desc");
+      filtername = orderBy("name", "desc");
+
+  default:
+    break;
+}
+
+
+
+
+
+ console.log("orderfilter______________", filterprice, filtername);
+
 
       onSnapshot(
         query(
@@ -227,8 +268,8 @@ where('category', '==' , `${filterarray.category}`)
          
           where("price", ">", `${minprice} `),
           where("price", "<", `${maxprice}`),
-          orderBy("price", "desc"),
-            orderBy("name", "asc")
+          orderBy("price", "asc"),
+            orderBy("name", 'asc')
           ,
         ),
         (snapshot) => {

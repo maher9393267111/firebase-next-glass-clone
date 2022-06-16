@@ -7,6 +7,8 @@ import 'antd/dist/antd.css';
 import FilterModal from '../components/filterModal';
 import AllContext from '../context/diff';
 import Cartbar from '../components/cartbar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps }) {
 
 return (
@@ -17,6 +19,10 @@ return (
         <AllContext>
       
         <Navbar/>
+        <ToastContainer
+      
+        
+        />
       <Cartbar/>
         <FilterModal/>
   <Component {...pageProps} />
