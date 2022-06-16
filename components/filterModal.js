@@ -122,7 +122,9 @@ const { filterarray,setFilterarray} = useAuth();
       <Slider 
       onChange={onChange}
       onAfterChange ={onAfterChange}
-      range defaultValue={[50, 400]}  />
+      max={1000}
+        min={0}
+      range defaultValue={[50, 500]}  />
       
     </>
 </div>

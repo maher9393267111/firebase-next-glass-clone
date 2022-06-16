@@ -23,6 +23,7 @@ import {
   orderBy,
   limit,
   query,
+  where,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -41,7 +42,14 @@ const AuthContext = ({ children }) => {
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
-  const [filterarray, setFilterarray] = useState({});
+  const [filterarray, setFilterarray] = useState({
+category: "",
+minprice: 0,
+maxprice: 100000,
+
+
+
+  });
   const [filteredproducts, setFilteredproducts] = useState([]);
 
   const signUp = async (email, password, name) => {
@@ -180,7 +188,7 @@ const AuthContext = ({ children }) => {
 useEffect(() => {
 
 console.log("filterarray",filterarray);
-if (Object.keys(filterarray).length === 0) {
+if (filterarray.category == "" && filterarray.minprice == 0 && filterarray.maxprice == 100000) {
 
 
 
@@ -210,13 +218,41 @@ onSnapshot(
 }
 
 
+else { 
+
+  const productsRef = collection(db,'products')
+
+console.log('filtered values------->',filterarray.category,filterarray.minprice,filterarray.maxprice)
 
 
-//   const productsRef = collection(db,'products')
+
+  // // $and
+  // const p= query(productsRef, where("category", "==", filterarray.category), where("price", ">=", filterarray.minprice),where("price", "<=", filterarray.maxprice)
+  // );
 
 
-//   // $and
-//   const p= query(productsRef, where("category", "==", "men"), where("price", ">=", "277"),where("price", "<=", "333"));
+
+  onSnapshot(
+    query(collection(db,"products"), 
+   // orderBy("name", "desc")
+   // ,
+    where("category", "==", filterarray.category),
+    //  where("price", ">=", filterarray.minprice),where("price", "<=", filterarray.maxprice)
+    ),
+    (snapshot) => {
+      const productsArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Filtered products is fetched arrrrrrrrrr", productsArr,'');
+      
+      setFilteredproducts(productsArr);
+      console.log("All Filtered---------> products is fetched", productsArr,'');
+    }
+  );
+
+
+
 
 
 // getDocs(p)
@@ -224,12 +260,13 @@ onSnapshot(
 //       const products = response.docs.map((doc) => {
 //         return { id: doc.id, ...doc.data() };
 //       });
-//       console.log("QUERY{1}---------->", products);
-//       setQueryproducts(products);
+//       console.log("filtered is  have values---------->", products);
+//       setFilteredproducts(products);
 //     })
 
 
 
+  }
   
 }, [filterarray]);
 
