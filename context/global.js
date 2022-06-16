@@ -51,6 +51,7 @@ const AuthContext = ({ children }) => {
     orderby: "",
   });
   const [filteredproducts, setFilteredproducts] = useState([]);
+  const [selected, setSelected] = useState({});
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -312,6 +313,7 @@ switch (filterarray.orderby) {
     setFilterarray,
     filteredproducts,
     setFilteredproducts,
+    selected, setSelected
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
