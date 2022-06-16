@@ -11,6 +11,7 @@ import {
   sendEmailVerification,
   sendSignInLinkToEmail,
   updateProfile,
+  
 } from "firebase/auth";
 
 import {
@@ -24,6 +25,7 @@ import {
   limit,
   query,
   where,
+  FieldPath,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -43,12 +45,9 @@ const AuthContext = ({ children }) => {
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
   const [filterarray, setFilterarray] = useState({
-category: "",
-minprice: 0,
-maxprice: 100000,
-
-
-
+    category: "",
+    minprice: 0,
+    maxprice: 100000,
   });
   const [filteredproducts, setFilteredproducts] = useState([]);
 
@@ -160,126 +159,98 @@ maxprice: 100000,
   useEffect(() => {
     console.log("executed");
     onSnapshot(
-      query(collection(db,"products"), orderBy("name", "desc")
-      ),
+      query(collection(db, "products"), orderBy("name", "desc")),
       (snapshot) => {
         const productsArr = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        
+
         setProducts(productsArr);
-        console.log("All products is fetched", productsArr,'');
+      //  console.log("All products is fetched", productsArr, "");
       }
     );
-
-
-
-
   }, []);
 
+  //-------------------------filtererdproducts-
 
+  useEffect(() => {
+    console.log("filterarray", filterarray);
+    if (
+      filterarray.category == "" &&
+      filterarray.minprice == 0 &&
+      filterarray.maxprice == 100000
+    ) {
+     // console.log("filtered is null fetccccccccccch all");
 
-//-------------------------filtererdproducts-
+      onSnapshot(
+        query(collection(db, "products"), orderBy("name", "desc")),
+        (snapshot) => {
+          const productsArr = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-
-
-      
-useEffect(() => {
-
-console.log("filterarray",filterarray);
-if (filterarray.category == "" && filterarray.minprice == 0 && filterarray.maxprice == 100000) {
-
-
-
-console.log('filtered is null fetccccccccccch all')
-
-onSnapshot(
-  query(collection(db,"products"), orderBy("name", "desc")
-  ),
-  (snapshot) => {
-    const productsArr = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+          setFilteredproducts(productsArr);
+          // console.log(      "All Filtered---------> products is fetched",   productsArr, ""  );
+        }
+      );
+    } 
     
-    setFilteredproducts(productsArr);
-    console.log("All Filtered---------> products is fetched", productsArr,'');
-  }
-);
+    
+    else { 
+    
+      const productsRef = collection(db, "products");
 
+      console.log(
+        "filtered values------->",
+        filterarray.category,
+        filterarray.minprice,
+        filterarray.maxprice
+      );
 
-
-  
-
-
-
-
-}
-
-
-else { 
-
-  const productsRef = collection(db,'products')
-
-console.log('filtered values------->',filterarray.category,filterarray.minprice,filterarray.maxprice)
-
-
-
-  // // $and
-  // const p= query(productsRef, where("category", "==", filterarray.category), where("price", ">=", filterarray.minprice),where("price", "<=", filterarray.maxprice)
-  // );
-
-
-
-  onSnapshot(
-    query(collection(db,"products"), 
-   // orderBy("name", "desc")
-   // ,
-    where("category", "==", filterarray.category),
-    //  where("price", ">=", filterarray.minprice),where("price", "<=", filterarray.maxprice)
-    ),
-    (snapshot) => {
-      const productsArr = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      console.log("Filtered products is fetched arrrrrrrrrr", productsArr,'');
       
-      setFilteredproducts(productsArr);
-      console.log("All Filtered---------> products is fetched", productsArr,'');
+const filtrcat = filterarray.category == '' ? where('category', 'in' , ['men', 'kids','women']) :
+where('category', '==' , `${filterarray.category}`)
+
+
+
+      const maxprice = filterarray.maxprice  
+      const minprice = filterarray.minprice  
+
+ 
+
+      onSnapshot(
+        query(
+          collection(db, "products"),
+           filtrcat,
+         
+          where("price", ">", `${minprice} `),
+          where("price", "<", `${maxprice}`),
+          orderBy("price", "desc"),
+            orderBy("name", "asc")
+          ,
+        ),
+        (snapshot) => {
+          const productsArr = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          //  console.log("RESponse", productsArr,'');
+          console.log("minprice", minprice,'maxprice',maxprice,filterarray.category);
+
+          setFilteredproducts(productsArr);
+          console.log(
+            " Filtered---------> products is fetched",
+            filteredproducts,
+            ""
+          );
+        }
+      );
+
+   
     }
-  );
-
-
-
-
-
-// getDocs(p)
-//     .then((response) => {
-//       const products = response.docs.map((doc) => {
-//         return { id: doc.id, ...doc.data() };
-//       });
-//       console.log("filtered is  have values---------->", products);
-//       setFilteredproducts(products);
-//     })
-
-
-
-  }
-  
-}, [filterarray]);
-
-    
-
-
-
-
-
-
-
-
-
+  }, [filterarray]);
 
   const value = {
     signUp,
@@ -298,7 +269,8 @@ console.log('filtered values------->',filterarray.category,filterarray.minprice,
     setProducts,
     filterarray,
     setFilterarray,
-    filteredproducts, setFilteredproducts
+    filteredproducts,
+    setFilteredproducts,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
