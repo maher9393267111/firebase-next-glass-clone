@@ -181,17 +181,46 @@ const AuthContext = ({ children }) => {
 
 useEffect(() => {
  
- const collectionref =  query(collection(db, "products"), where("category", "==", "kids"))
+  // find by product name with regex
+  const collecref = collection(db, "products");
+  
+const queryname ='kidrad'
 
- getDocs(collectionref)
+
+ const collectionref =  query(collection(db, "products"), where("name", "==", `kidrad` ))
+ 
+
+ var q1 = query(collection(db, "products"), where("name", "==", `kidrad` ))
+
+var q2 = query(collection(db, "products"), where("category", "==", `men` ))
+
+
+
+
+
+ getDocs(q2)
  .then(response => {
      const products = response.docs.map(doc => {
          return { id: doc.id, ...doc.data() }
      })
-     console.log('---------->',products)
+     console.log('QUERY{1}---------->',products)
      setQueryproducts(products)
-     console.log('deneme------>', deneme)
- }).catch(err => {
+     
+ })
+ .then(() => {
+
+  getDocs(q1)
+  .then(response => {
+      const products = response.docs.map(doc => {
+          return { id: doc.id, ...doc.data() }
+      })
+      console.log('QURY{2}---------->',products)
+      setQueryproducts([...queryproducts, ...products])
+     
+    } ) } )
+ 
+ 
+ .catch(err => {
      console.log(err)
  }).finally(() => {
  })

@@ -9,30 +9,31 @@ import MainHome from "../components/mainHome";
 import Modal from "react-modal";
 import { useAuth } from "../context/global";
 import { diffcontext } from "../context/diff";
-import {db} from "../firebase";
-import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "firebase/firestore";
+import { db } from "../firebase";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
 
-  const { logout, forgetPassword, currentUser, userinfo,products,setProducts,queryproducts } = useAuth();
+  const {
+    logout,
+    forgetPassword,
+    currentUser,
+    userinfo,
+    products,
+    setProducts,
+    queryproducts,
+  } = useAuth();
   const [isSSR, setIsSSR] = useState(true);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     setIsSSR(false);
@@ -55,33 +56,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-{/* -------main sectin start- */}
+      {/* -------main sectin start- */}
 
-
-<div className=" ml-14 mr-14">
-
-{queryproducts?.map((item,index)=>{
-
-return (
-
-  <div>
-    <h1>{item?.name}</h1>
-  </div>
-)})}
-<div>
-  <MainHome />
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-    
+      <div className=" ml-14 mr-14">
+        {queryproducts?.map((item, index) => {
+          return (
+            <div>
+              <h1>{item?.name}</h1>
+            </div>
+          );
+        })}
+        <div>
+          <MainHome />
+        </div>
+      </div>
     </div>
   );
 }
