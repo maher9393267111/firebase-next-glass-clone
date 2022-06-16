@@ -6,47 +6,34 @@ import Link from "next/link";
 import { diffcontext } from "../context/diff";
 import { useGetRecoilValueInfo_UNSTABLE } from "recoil";
 
-
 const Navbar = () => {
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
-  const { currentUser, logout,userinfo } = useAuth();
-  const [addfixed, setAddfixed] = useState('');
-  const {showDrawer, onClose} = diffcontext();
+  const { currentUser, logout, userinfo } = useAuth();
+  const [addfixed, setAddfixed] = useState("");
+  const { showDrawer, onClose } = diffcontext();
 
   useEffect(() => {
+    const scrollfunction = () => {
+      if (window.scrollY > 100) {
+        console.log("addfixed", addfixed);
+        setAddfixed("scrollnav");
+      } else {
+        console.log("remove fixed", addfixed);
+        setAddfixed("");
+      }
+    };
 
-
-  const  scrollfunction = () => {
-    if(window.scrollY > 100){
-      console.log("addfixed",addfixed);
-      setAddfixed('scrollnav');
-    }
-
-    else{
-      console.log("remove fixed",addfixed);
-      setAddfixed('');
-    }
-  }
-
-  window.addEventListener('scroll',scrollfunction);
-
-    
-
-
+    window.addEventListener("scroll", scrollfunction);
   }, []);
-  
-
-
-
-
-
 
   return (
     <div className=" ">
       <div>
         {/* {userinfo?.name} */}
-        <Row className={ `  ${addfixed}   bg-white z-30  ml-8 min-h-[78px]  transition-all  duration-200   shadow-xl`}>
+        <Row
+          className={`  ${addfixed}   bg-white z-30  ml-8 min-h-[78px]  transition-all  duration-200   shadow-xl`}
+        >
           <Col className="  " span={12}>
             <div>
               <div className="  pt-[46px]">
@@ -75,7 +62,7 @@ const Navbar = () => {
                             : "text-gray-500"
                         }`}
                       >
-                        Home   
+                        Home
                         {/* {currentUser?.email} */}
                       </li>
                       <li
@@ -177,7 +164,7 @@ const Navbar = () => {
 
                         <div className="ml-2">
                           <img
-                          onClick={showDrawer }
+                            onClick={showDrawer}
                             className="w-8 h-8"
                             src="https://cdn1.iconfinder.com/data/icons/shopping-346/24/buy-bag-cart-shop-shopping-256.png"
                             alt=""
@@ -225,30 +212,28 @@ const Navbar = () => {
                     </div>
                   ) : (
                     <div className=" flex gap-6">
-                      <div> 
-
-                      <button
-                     onClick={logout}
-                      
-                      type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Logout</button>
-
-
+                      <div>
+                        <button
+                          onClick={logout}
+                          type="button"
+                          class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        >
+                          Logout
+                        </button>
                       </div>
 
                       <div>
                         <div className="  relative    -top-2">
                           <div>
-
-                          
-                        <img
-                          className="w-8 h-8  mx-auto rounded-full"
-                          src={userinfo?.image} alt="" />
+                            <img
+                              className="w-8 h-8  mx-auto rounded-full"
+                              src={userinfo?.image}
+                              alt=""
+                            />
                           </div>
-                          <p
-                          className="  font-bold   hover:text-blue-700  dark:hover:text-blue-700"
-                          >{userinfo?.name}</p>
-                        
-
+                          <p className="  font-bold   hover:text-blue-700  dark:hover:text-blue-700">
+                            {userinfo?.name}
+                          </p>
                         </div>
                       </div>
                     </div>

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import "../styles/Home.module.css";
 import { useState, useEffect } from "react";
+import Showingproducts from "../components/Showingproducts";
 
 import { Button } from "antd";
 import MainHome from "../components/mainHome";
@@ -9,30 +10,30 @@ import MainHome from "../components/mainHome";
 import Modal from "react-modal";
 import { useAuth } from "../context/global";
 import { diffcontext } from "../context/diff";
-import {db} from "../firebase";
-import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "firebase/firestore";
+import { db } from "../firebase";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
 
-  const { logout, forgetPassword, currentUser, userinfo,products,setProducts } = useAuth();
+  const {
+    logout,
+    forgetPassword,
+    currentUser,
+    userinfo,
+    products,
+    setProducts,
+  } = useAuth();
   const [isSSR, setIsSSR] = useState(true);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     setIsSSR(false);
@@ -55,26 +56,30 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-{/* -------main sectin start- */}
+      {/* -------main sectin start- */}
+
+      <div className=" ml-14 mr-14">
+        <div>
+          <MainHome />
+        </div>
 
 
-<div className=" ml-14 mr-14">
+{/* show- 6 products */}
 
 
-<div>
-  <MainHome />
+<div className=" mt-12">
+
+
+<Showingproducts productsnumber={6} />
+
+
+
 </div>
 
 
 
 
-
-
-</div>
-
-
-
-    
+      </div>
     </div>
   );
 }
