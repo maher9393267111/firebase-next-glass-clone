@@ -17,11 +17,13 @@ import {
   doc,
   setDoc,
   getDoc,
+  getDocs,
   collection,
   onSnapshot,
   orderBy,
   limit,
   query,
+  where,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -40,6 +42,8 @@ const AuthContext = ({ children }) => {
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
+  
+  const [queryproducts, setQueryproducts] = useState([]);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -146,6 +150,7 @@ const AuthContext = ({ children }) => {
     return unsubscribe;
   }, [currentUser, auth]);
 
+
   useEffect(() => {
     console.log("executed");
     onSnapshot(
@@ -163,9 +168,52 @@ const AuthContext = ({ children }) => {
     );
 
 
-
-
   }, []);
+
+
+
+
+
+
+
+
+// deneme----
+
+useEffect(() => {
+ 
+ const collectionref =  query(collection(db, "products"), where("category", "==", "kids"))
+
+ getDocs(collectionref)
+ .then(response => {
+     const products = response.docs.map(doc => {
+         return { id: doc.id, ...doc.data() }
+     })
+     console.log('---------->',products)
+     setQueryproducts(products)
+     console.log('deneme------>', deneme)
+ }).catch(err => {
+     console.log(err)
+ }).finally(() => {
+ })
+
+
+
+
+
+}, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const value = {
     signUp,
@@ -182,6 +230,7 @@ const AuthContext = ({ children }) => {
     forgetPassword,
     products,
     setProducts,
+    queryproducts,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

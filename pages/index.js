@@ -15,7 +15,7 @@ import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "f
 export default function Home() {
   const [open, setOpen] = useState(false);
 
-  const { logout, forgetPassword, currentUser, userinfo,products,setProducts } = useAuth();
+  const { logout, forgetPassword, currentUser, userinfo,products,setProducts,queryproducts } = useAuth();
   const [isSSR, setIsSSR] = useState(true);
 
 
@@ -60,7 +60,14 @@ export default function Home() {
 
 <div className=" ml-14 mr-14">
 
+{queryproducts?.map((item,index)=>{
 
+return (
+
+  <div>
+    <h1>{item?.name}</h1>
+  </div>
+)})}
 <div>
   <MainHome />
 </div>
