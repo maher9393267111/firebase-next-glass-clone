@@ -191,23 +191,9 @@ const AuthContext = ({ children }) => {
 
 
 
-    const productsref   = collection(db,'products')
-    const q = query(productsref, where('price', 'in', ['323', '277']));
+  
 
-    
-    const q7 = query(productsref, where('price', '<=', '277'));
-
-
-
-    getDocs(q7)
-      .then((response) => {
-        const products = response.docs.map((doc) => {
-          return { id: doc.id, ...doc.data() };
-        });
-        console.log("QUERY{1}---------->", products);
-        setQueryproducts(products);
-      })
-
+  
 
 
 
