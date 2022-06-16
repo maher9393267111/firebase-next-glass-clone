@@ -42,7 +42,7 @@ const AuthContext = ({ children }) => {
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
-  
+
   const [queryproducts, setQueryproducts] = useState([]);
 
   const signUp = async (email, password, name) => {
@@ -150,102 +150,92 @@ const AuthContext = ({ children }) => {
     return unsubscribe;
   }, [currentUser, auth]);
 
-
   useEffect(() => {
     console.log("executed");
     onSnapshot(
-      query(collection(db,"products"), orderBy("name", "desc")
-      ),
+      query(collection(db, "products"), orderBy("name", "desc")),
       (snapshot) => {
         const productsArr = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        
+
         setProducts(productsArr);
-        console.log("All products is fetched", productsArr,'');
+        console.log("All products is fetched", productsArr, "");
       }
+    );
+  }, []);
+
+  // deneme------------------------
+
+  useEffect(() => {
+    // find by product name with regex
+    const collecref = collection(db, "products");
+
+    const queryname = "kidrad";
+
+    const collectionref = query(
+      collection(db, "products"),
+      where("name", "==", `kidrad`)
     );
 
 
-  }, []);
+
+
+    var q1 = query(collection(db, "products"), where("name", "==", "PROt55"));
+
+    var q2 = query(
+      collection(db, "products"),
+      where("category", "==", "women")
+    );
 
 
 
+    const productsref   = collection(db,'products')
+    const q = query(productsref, where('category', 'in', ['men', 'kids']));
+
+    
 
 
 
-
-
-// deneme----
-
-useEffect(() => {
- 
-  // find by product name with regex
-  const collecref = collection(db, "products");
-  
-const queryname ='kidrad'
-
-
- const collectionref =  query(collection(db, "products"), where("name", "==", `kidrad` ))
- 
-
- var q1 = query(collection(db, "products"), where("name", "==", "PROt55" ))
-
-var q2 = query(collection(db, "products"), where("category", "==", "women" ))
-
-
-
-
-
-
- getDocs(q1)
- .then(response => {
-     const products = response.docs.map(doc => {
-         return { id: doc.id, ...doc.data() }
-     })
-     console.log('QUERY{1}---------->',products)
-     setQueryproducts(products)
-
-     
- })
- .then(() => {
-
-  getDocs(q2)
-  .then(response => {
-      const products = response.docs.map(doc => {
-          return { id: doc.id, ...doc.data() }
+    getDocs(q)
+      .then((response) => {
+        const products = response.docs.map((doc) => {
+          return { id: doc.id, ...doc.data() };
+        });
+        console.log("QUERY{1}---------->", products);
+        setQueryproducts(products);
       })
-      console.log('QURY{2} all products---------->',products)
-      setQueryproducts([...queryproducts, ...products])
-   
-    //  setQueryproducts([...queryproducts, products])
-     
-   
-    } ) } )
- 
- 
-
-
-
-//  .catch(err => {
-//      console.log(err)
-//  }).finally(() => {
-//  })
 
 
 
 
 
-}, []);
+    // getDocs(q1)
+    //   .then((response) => {
+    //     const products = response.docs.map((doc) => {
+    //       return { id: doc.id, ...doc.data() };
+    //     });
+    //     console.log("QUERY{1}---------->", products);
+    //     setQueryproducts(products);
+    //   })
+    //   .then(() => {
+    //     getDocs(q2).then((response) => {
+    //       const products = response.docs.map((doc) => {
+    //         return { id: doc.id, ...doc.data() };
+    //       });
+    //       console.log("QURY{2} all products---------->", products);
+    //       setQueryproducts([...queryproducts, ...products]);
 
+    //       //  setQueryproducts([...queryproducts, products])
+    //     });
+    //   })
 
-
-
-
-
-
-
+    //  .catch(err => {
+    //      console.log(err)
+    //  }).finally(() => {
+    //  })
+  }, []);
 
 
 
