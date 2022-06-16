@@ -192,7 +192,7 @@ const AuthContext = ({ children }) => {
 
 
     const productsref   = collection(db,'products')
-    const q = query(productsref, where('name', 'in', ['ALCONty', 'katen4']));
+    const q = query(productsref, where('price', 'in', ['323', '277']));
 
     
 
