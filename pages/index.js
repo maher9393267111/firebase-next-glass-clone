@@ -4,6 +4,7 @@ import "../styles/Home.module.css";
 import { useState, useEffect } from "react";
 
 import { Button } from "antd";
+import MainHome from "../components/mainHome";
 
 import Modal from "react-modal";
 import { useAuth } from "../context/global";
@@ -14,31 +15,18 @@ import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "f
 export default function Home() {
   const [open, setOpen] = useState(false);
 
-  const { logout, forgetPassword, currentUser, userinfo,products } = useAuth();
+  const { logout, forgetPassword, currentUser, userinfo,products,setProducts } = useAuth();
   const [isSSR, setIsSSR] = useState(true);
 
-//console.log(products)
-
-const [allproducts, setAllproducts] = useState([]);
 
 
 
 
 
 
-useEffect(() => {
-  onSnapshot(
-    query(collection(db,"products"), orderBy("name", "desc")),
-    (snapshot) => {
-      const productsArr = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setAllproducts(productsArr);
-      console.log("All products is fetched", productsArr,'',allproducts);
-    }
-  );
-}, []);
+
+
+
 
 
 
@@ -70,13 +58,12 @@ useEffect(() => {
 {/* -------main sectin start- */}
 
 
+<div className=" ml-14 mr-14">
+
+
 <div>
-
-
-
-{userinfo?.role}
-
-{allproducts?.length}
+  <MainHome />
+</div>
 
 
 

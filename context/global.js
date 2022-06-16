@@ -11,10 +11,18 @@ import {
   sendEmailVerification,
   sendSignInLinkToEmail,
   updateProfile,
-
 } from "firebase/auth";
 
-import { doc, setDoc, getDoc,collection,onSnapshot,orderBy,limit ,query} from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
@@ -30,9 +38,8 @@ export const useAuth = () => {
 const AuthContext = ({ children }) => {
   const [currentUser, setUser] = useState({});
   const [userinfo, setUserinfo] = useState({});
-  const [ reg, setreg ] = useState(false);
-  const [products, setProducts] = useState([])
-
+  const [reg, setreg] = useState(false);
+  const [products, setProducts] = useState([]);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -51,62 +58,43 @@ const AuthContext = ({ children }) => {
   };
 
   // sign with google
-  const signInWithGoogle =async () => {
+  const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider);
+    await signInWithPopup(auth, provider);
 
+    // add the user to the users collection
 
- 
-  // add the user to the users collection
-
-  await setDoc(doc(db, "users", auth.currentUser.email), {
-    watchList: [],
-    name: auth.currentUser.displayName,
-    role: "user",
-    image: auth.currentUser.photoURL,
-    email: auth.currentUser.email,
-      password: "",
-      cart: [],
-      order: [],
-  });
-
-
-
-  
-
-
-
-
-
-
-
-
-  };
-
-  // sign with github
-  const signInWithGithub = async() => {
-    const provider = new GithubAuthProvider();
-     signInWithPopup(auth, provider);
-
-
-     await setDoc(doc(db, "users", auth.currentUser.email), {
+    await setDoc(doc(db, "users", auth.currentUser.email), {
       watchList: [],
       name: auth.currentUser.displayName,
       role: "user",
       image: auth.currentUser.photoURL,
       email: auth.currentUser.email,
-        password: "",
-        cart: [],
-        order: [],
+      password: "",
+      cart: [],
+      order: [],
     });
-  
+  };
 
+  // sign with github
+  const signInWithGithub = async () => {
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider);
 
-
+    await setDoc(doc(db, "users", auth.currentUser.email), {
+      watchList: [],
+      name: auth.currentUser.displayName,
+      role: "user",
+      image: auth.currentUser.photoURL,
+      email: auth.currentUser.email,
+      password: "",
+      cart: [],
+      order: [],
+    });
   };
 
   // sign with facebook
-  const signInWithFacebook =async () => {
+  const signInWithFacebook = async () => {
     await signInWithPopup(auth, FacebookAuthProvider);
     await setDoc(doc(db, "users", auth.currentUser.email), {
       watchList: [],
@@ -114,32 +102,23 @@ const AuthContext = ({ children }) => {
       role: "user",
       image: auth.currentUser.photoURL,
       email: auth.currentUser.email,
-        password: "",
-        cart: [],
-        order: [],
+      password: "",
+      cart: [],
+      order: [],
     });
-  
   };
 
-
-
-// reset password
-const forgetPassword = (email) => {
-
-  sendPasswordResetEmail(auth, email)
-    .then((res) => {
-      console.log(` Email Sent to ${email}`);
-    //  handleOpen();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-
-
-
-
+  // reset password
+  const forgetPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+      .then((res) => {
+        console.log(` Email Sent to ${email}`);
+        //  handleOpen();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -147,16 +126,16 @@ const forgetPassword = (email) => {
         // User is signed in.
 
         setUser(user);
-      //  console.log("user status changed: ", user.email, user.uid);
+        //  console.log("user status changed: ", user.email, user.uid);
 
         async function fetchuser() {
           if (user) {
-          //  console.log(`currentUser: ${user.email}`);
+            //  console.log(`currentUser: ${user.email}`);
 
             await getDoc(doc(db, "users", user.email)).then((userdata) => {
               //console.log('userdata',userdata)
               setUserinfo(userdata.data());
-            //  console.log("userinf------->>>", userinfo);
+              //  console.log("userinf------->>>", userinfo);
             });
           }
         }
@@ -167,10 +146,26 @@ const forgetPassword = (email) => {
     return unsubscribe;
   }, [currentUser, auth]);
 
+  useEffect(() => {
+    console.log("executed");
+    onSnapshot(
+      query(collection(db,"products"), orderBy("name", "desc")
+      ),
+      (snapshot) => {
+        const productsArr = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        
+        setProducts(productsArr);
+        console.log("All products is fetched", productsArr,'');
+      }
+    );
 
 
 
 
+  }, []);
 
   const value = {
     signUp,
@@ -184,8 +179,9 @@ const forgetPassword = (email) => {
     createUserWithEmailAndPassword,
     reg,
     setreg,
-    forgetPassword ,
+    forgetPassword,
     products,
+    setProducts,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

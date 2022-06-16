@@ -46,7 +46,7 @@ const Navbar = () => {
     <div className=" ">
       <div>
         {/* {userinfo?.name} */}
-        <Row className={ `  ${addfixed}  ml-8 min-h-[78px]  transition-all  duration-200   shadow-xl`}>
+        <Row className={ `  ${addfixed}   bg-white z-30  ml-8 min-h-[78px]  transition-all  duration-200   shadow-xl`}>
           <Col className="  " span={12}>
             <div>
               <div className="  pt-[46px]">
