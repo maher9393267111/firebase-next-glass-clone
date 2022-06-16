@@ -196,7 +196,9 @@ const AuthContext = ({ children }) => {
 
     const productsRef = collection(db,'products')
 
-    const p= query(productsRef, where("category", "==", "men"), where("name", ">=", "ALCONty"));
+
+    // $and
+    const p= query(productsRef, where("category", "==", "men"), where("price", ">=", "277"),where("price", "<=", "333"));
 
 
   
