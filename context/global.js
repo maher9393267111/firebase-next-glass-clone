@@ -313,37 +313,55 @@ const searchByName = (name) => {
 
 // add product to current user cart
 
-const addtocart =async (product) => {
+const addtocart = async (product) => {
 
-  console.log('userinfo',userinfo.email);
-
-//    await updateDoc(collection(db, 'users' ,`${userinfo?.email}`) ,{
-//     cart: [...cart, product]
-// });
+console.log("product", product.id);
 
 const userpath = doc(db, "users", `${userinfo?.email}`)
 const cart = await (await getDoc(userpath)).data().cart;
+  console.log("cart", cart); // cart is an array itis working
 
-await updateDoc(userpath, {
-  cart: ([...cart, product]),
-});
+  const exist = cart.filter(
+    (item) =>
+      // indexof is used to check if the item is already in the cart
+      item.id === product.id
+  );
+  console.log("exist", exist);
 
+  if (exist.length === 0 || exist === []) {
+    console.log("notexist length is 0", exist);
 
+    product.quantity = 1;
 
+    await updateDoc(userpath, {
+      cart: [...cart, product],
+    });
+  }
 
-// .then((userdata) => {
+  // if exist.length is not 0 and product is exist in the cart  //
+  else {
+    console.log("exist length is not 0", exist);
 
-//   cart: [...cart, product]
-//   //console.log('userdata',userdata)
-//  // (userdata.data());
-//   // console.log("user  inoffff------->>>", userdata.data());
-// });
+    await updateDoc(userpath, {
+      cart: cart.filter((item) => item.id !== product.id), // delete product from cart if exist
 
+      // onother option  increase the quantity of the product if exist
 
+      // make loop to all cart products and increase the quantity  where product id is equal to the product id in the cart
 
-
+      // cart: cart.map((item) => {
+      //   if (item.id === product.id) {
+      //     item.quantity += 1;
+      //   }
+      //   return item;
+      // }),
+    });
+  
+};
 
 }
+
+
 
 
 

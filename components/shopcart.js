@@ -12,7 +12,7 @@ console.log("product", product.id);
 const handleproductid = (product) => {
 
 addtocart(product);
-console.log("productid", product);
+
 
 
 }
