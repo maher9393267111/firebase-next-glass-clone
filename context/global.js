@@ -17,6 +17,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  getDocs,
   collection,
   onSnapshot,
   orderBy,
@@ -40,6 +41,8 @@ const AuthContext = ({ children }) => {
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
+  const [filterarray, setFilterarray] = useState({});
+  const [filteredproducts, setFilteredproducts] = useState([]);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -167,6 +170,80 @@ const AuthContext = ({ children }) => {
 
   }, []);
 
+
+
+//-------------------------filtererdproducts-
+
+
+
+      
+useEffect(() => {
+
+console.log("filterarray",filterarray);
+if (Object.keys(filterarray).length === 0) {
+
+
+
+console.log('filtered is null fetccccccccccch all')
+
+onSnapshot(
+  query(collection(db,"products"), orderBy("name", "desc")
+  ),
+  (snapshot) => {
+    const productsArr = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    
+    setFilteredproducts(productsArr);
+    console.log("All Filtered---------> products is fetched", productsArr,'');
+  }
+);
+
+
+
+  
+
+
+
+
+}
+
+
+
+
+//   const productsRef = collection(db,'products')
+
+
+//   // $and
+//   const p= query(productsRef, where("category", "==", "men"), where("price", ">=", "277"),where("price", "<=", "333"));
+
+
+// getDocs(p)
+//     .then((response) => {
+//       const products = response.docs.map((doc) => {
+//         return { id: doc.id, ...doc.data() };
+//       });
+//       console.log("QUERY{1}---------->", products);
+//       setQueryproducts(products);
+//     })
+
+
+
+  
+}, [filterarray]);
+
+    
+
+
+
+
+
+
+
+
+
+
   const value = {
     signUp,
     signIn,
@@ -182,6 +259,9 @@ const AuthContext = ({ children }) => {
     forgetPassword,
     products,
     setProducts,
+    filterarray,
+    setFilterarray,
+    filteredproducts, setFilteredproducts
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

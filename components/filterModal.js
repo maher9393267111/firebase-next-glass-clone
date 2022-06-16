@@ -1,9 +1,51 @@
 import React from 'react';
 import {diffcontext } from '../context/diff';
 import { AnimatePresence,motion } from "framer-motion";
+import { Select,Slider, Switch } from 'antd';
+const { Option } = Select;
+import {useState} from 'react';
+import { useAuth } from '../context/global';
 const FilterModal = () => {
     const { show,setShow } = diffcontext();
+    const [disabled, setDisabled] = useState(false);
+
+  
+    const onChange = (value) => {
+        console.log('onChange: ', value);
+      };
+      
+      const onAfterChange = (value) => {
+        console.log('onAfterChange: ', value);
+        setFilterarray({...filterarray,minprice:value[0],maxprice:value[1]});
+        console.log('-------->',filterarray);
+      };
+
+
+
+
+
+
+const { filterarray,setFilterarray} = useAuth();
+ 
+
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
+        setFilterarray({ ...filterarray, category:value})
+        console.log('filter------->',filterarray);
+
+// if filterarray have category remove old category and add new category
+
+        
+
+
+      };
+
+
+
+
     return (
+
+
 
 
         
@@ -46,8 +88,58 @@ const FilterModal = () => {
             </div>
            {/* ------content- */}
             
-            <div className=' min-h-[140px] mx-auto'>
-                dsd
+            <div className=' min-h-[140px] mx-auto ml-6'>
+                
+
+            <>
+    <Select
+      defaultValue="men"
+      style={{
+        width: 120,
+      }}
+      onChange={handleChange}
+    >
+      <Option value="men">men</Option>
+      <Option value="women">women</Option>
+      <Option value="kids" >
+        kids
+      </Option>
+    
+    </Select>
+
+
+ 
+  </>
+
+
+<>
+
+<div>
+
+
+<>
+      
+      <Slider 
+      onChange={onChange}
+      onAfterChange ={onAfterChange}
+      range defaultValue={[50, 400]}  />
+      
+    </>
+</div>
+
+
+
+
+
+
+</>
+
+
+
+
+
+
+
             </div>
            
             
