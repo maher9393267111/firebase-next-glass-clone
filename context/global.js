@@ -150,6 +150,9 @@ const AuthContext = ({ children }) => {
     return unsubscribe;
   }, [currentUser, auth]);
 
+
+
+
   useEffect(() => {
     console.log("executed");
     onSnapshot(
@@ -191,7 +194,22 @@ const AuthContext = ({ children }) => {
 
 
 
+    const productsRef = collection(db,'products')
+
+    const p= query(productsRef, where("category", "==", "men"), where("name", ">=", "ALCONty"));
+
+
   
+getDocs(p)
+      .then((response) => {
+        const products = response.docs.map((doc) => {
+          return { id: doc.id, ...doc.data() };
+        });
+        console.log("QUERY{1}---------->", products);
+        setQueryproducts(products);
+      })
+
+
 
   
 
