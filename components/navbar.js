@@ -242,11 +242,11 @@ const Navbar = () => {
                           
                         <img
                           className="w-8 h-8  mx-auto rounded-full"
-                          src={currentUser?.photoURL} alt="" />
+                          src={userinfo?.image} alt="" />
                           </div>
                           <p
                           className="  font-bold   hover:text-blue-700  dark:hover:text-blue-700"
-                          >{currentUser?.displayName}</p>
+                          >{userinfo?.name}</p>
                         
 
                         </div>
