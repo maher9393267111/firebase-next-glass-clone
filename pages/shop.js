@@ -25,7 +25,7 @@ const Shop = () => {
 
 <div>
     <h1
-    className=" text-2xl font-bold   text-center mt-6 mb-6"
+    className=" text-2xl font-bold  pb-6  text-center mt-6 mb-6"
     >Shop Products</h1>
 </div>
 

@@ -22,7 +22,18 @@ const Navbar = () => {
         console.log("remove fixed", addfixed);
         setAddfixed("");
       }
+
+
     };
+
+
+
+// if end the page remove fixed
+if (window.scrollheight === window.scrollY) {
+
+  setAddfixed("");
+}
+
 
     window.addEventListener("scroll", scrollfunction);
   }, []);

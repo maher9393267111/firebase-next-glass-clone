@@ -1,12 +1,33 @@
 import React from 'react';
-
+import {useState, useEffect} from 'react';
+import { useAuth } from '../context/global';
 const Shopcart = ({product}) => {
+
+const [productid, setProductid] = useState('');
+const {addtocart} = useAuth();
+
+
+console.log("product", product.id);
+
+const handleproductid = (product) => {
+
+addtocart(product);
+console.log("productid", product);
+
+
+}
+
+
+
     return (
-        <div className='  w-[288px] h-[288px]   overflow-y-hidden border-2 border-blue-600'>
+        <div className='  w-[333px] h-[288px]   overflow-y-hidden border-2 border-blue-600'>
             
 
             <div class="card  bg-slate-400">
-  <div class="cardTop">
+  <div
+
+  onClick={(e) => handleproductid(product)}
+  class="cardTop">
 <img
 className='h-full w-full'
 
@@ -16,8 +37,9 @@ src={product.images[0].image} alt="" />
   <div class="cardBottom">
     <div class="cardText">
       {/* <!--       Title and description will always show --> */}
-      <h3 class="cardTitle">{product?.name}</h3>
+      <h3 class="cardTitle">{product?.name}  </h3>
       <h4 class="cardInfo">{product?.category}</h4>
+      <h1>{product?.price}$</h1>
       {/* <!--       Only visibile when parent element is hovered over --> */}
       <div class="cardHoverText">
         

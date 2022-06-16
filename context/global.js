@@ -26,6 +26,7 @@ import {
   query,
   where,
   FieldPath,
+  updateDoc
 } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -195,7 +196,7 @@ const AuthContext = ({ children }) => {
           }));
 
           setFilteredproducts(productsArr);
-          // console.log(      "All Filtered---------> products is fetched",   productsArr, ""  );
+          console.log(      "All Filtered---------> products is fetched",   productsArr, ""  );
         }
       );
     } 
@@ -294,6 +295,59 @@ switch (filterarray.orderby) {
     }
   }, [filterarray]);
 
+
+
+
+// search by name
+
+const searchByName = (name) => {
+
+// go to shop page
+// set searchname to name
+
+
+
+}
+
+
+
+// add product to current user cart
+
+const addtocart =async (product) => {
+
+  console.log('userinfo',userinfo.email);
+
+//    await updateDoc(collection(db, 'users' ,`${userinfo?.email}`) ,{
+//     cart: [...cart, product]
+// });
+
+const userpath = doc(db, "users", `${userinfo?.email}`)
+const cart = await (await getDoc(userpath)).data().cart;
+
+await updateDoc(userpath, {
+  cart: ([...cart, product]),
+});
+
+
+
+
+// .then((userdata) => {
+
+//   cart: [...cart, product]
+//   //console.log('userdata',userdata)
+//  // (userdata.data());
+//   // console.log("user  inoffff------->>>", userdata.data());
+// });
+
+
+
+
+
+}
+
+
+
+
   const value = {
     signUp,
     signIn,
@@ -314,6 +368,7 @@ switch (filterarray.orderby) {
     filteredproducts,
     setFilteredproducts,
     selected, setSelected
+    ,addtocart
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
