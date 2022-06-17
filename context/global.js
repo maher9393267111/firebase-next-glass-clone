@@ -303,7 +303,7 @@ const AuthContext = ({ children }) => {
   // add product to current user cart
 
   const addtocart = async (product) => {
-   // console.log("product", product.id);
+    // console.log("product", product.id);
 
     const userpath = doc(db, "users", `${userinfo?.email}`);
     const cart = await (await getDoc(userpath)).data().cart;
@@ -317,7 +317,7 @@ const AuthContext = ({ children }) => {
     //console.log("exist", exist);
 
     if (exist.length === 0 || exist === []) {
-    //  console.log("product is notexist in cart add it", exist);
+      //  console.log("product is notexist in cart add it", exist);
 
       console.log(checexist);
 
@@ -332,9 +332,7 @@ const AuthContext = ({ children }) => {
 
     // if exist.length is not 0 and product is exist in the cart  //
     else {
-     // console.log("product is exist in cart remove it  ", exist);
-
-      
+      // console.log("product is exist in cart remove it  ", exist);
 
       await updateDoc(userpath, {
         cart: cart.filter((item) => item.id !== product.id), // delete product from cart if exist
@@ -350,8 +348,6 @@ const AuthContext = ({ children }) => {
         //   return item;
         // }),
       });
-
-     
     }
   };
 
@@ -373,42 +369,87 @@ const AuthContext = ({ children }) => {
       const cart = await (await getDoc(userpath)).data()?.cart;
 
       const checkglobal = await cart?.filter((item) => item.id === productid);
-      
 
-    //  console.log("checkglobal", checkglobal);
+      //  console.log("checkglobal", checkglobal);
 
-
-      if (checkglobal?.length === 0 || checkglobal === []){
+      if (checkglobal?.length === 0 || checkglobal === []) {
         setChecexist(false);
-//console.log("product is notexist in cart global", checkglobal);
-      }
-
-      else{
+        //console.log("product is notexist in cart global", checkglobal);
+      } else {
         setChecexist(true);
-       // console.log("product is exist in cart global", checkglobal);
+        // console.log("product is exist in cart global", checkglobal);
       }
-
-
-
-
-
     };
 
-
     usercart().then(() => isexist());
-    
-
-    
 
     //getusercart()
-  }, [userinfo, productid,refreshcart ]);
+  }, [userinfo, productid, refreshcart]);
 
   const getusercart = async () => {
     console.log("executed user cart");
-      const userpath = doc(db, "users", `${userinfo?.email}`)
-      const cart = await (await getDoc(userpath)).data()?.cart;
-     return cart;
+    const userpath = doc(db, "users", `${userinfo?.email}`);
+    const cart = await (await getDoc(userpath)).data()?.cart;
+    return cart;
   };
+
+  // increase the quantity of the product and update in firebase
+
+  const increaseQuantity = async (product) => {
+    const userpath = doc(db, "users", `${userinfo?.email}`);
+
+    const cart = await (await getDoc(userpath)).data()?.cart;
+
+    await updateDoc(userpath, {
+      cart: cart.map((item) => {
+        if (item.id === product.id) {
+          item.quantity += 1;
+        }
+        return item;
+      }),
+    });
+
+    setusercart(cart);
+
+
+
+  };
+
+
+//- decrtease the quantity of the product and update in firebase
+
+const decreaseQuantity = async (product) => {
+  const userpath = doc(db, "users", `${userinfo?.email}`);
+
+  const cart = await (await getDoc(userpath)).data()?.cart;
+
+  await updateDoc(userpath, {
+    cart: cart.map((item) => {
+      if (item.id === product.id) {
+
+if (item.quantity > 1) {
+  item.quantity -= 1;
+
+}
+
+else {
+  item.quantity = 1;
+}
+        
+      }
+      return item;
+    }),
+  });
+
+  setusercart(cart);
+
+
+
+};
+
+
+
+
 
   const value = {
     signUp,
@@ -435,8 +476,12 @@ const AuthContext = ({ children }) => {
     usercart,
     productid,
     setProductid,
-    setRefreshcart,refreshcart,
-    carbarsend, setCarbarsend
+    setRefreshcart,
+    refreshcart,
+    carbarsend,
+    setCarbarsend,
+    increaseQuantity,
+    decreaseQuantity
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

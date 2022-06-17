@@ -1,6 +1,12 @@
 import React from 'react';
+import {useAuth} from '../context/global';
+import { useState,useEffect } from 'react';
 
 const Cartitem = ({item}) => {
+
+
+const {increaseQuantity, decreaseQuantity} = useAuth();
+
     return (
         <div>
             
@@ -39,17 +45,22 @@ className='  w-[27px] h-[27px] rounded-full'
 {/* -decrease- */}
     <div>
 <img
+onClick={()=>decreaseQuantity(item)}
 className=' h-6 w-6'
 src="https://cdn1.iconfinder.com/data/icons/basic-user-interface-7/24/delete_remove_minus_decrease-128.png" alt="" />
     </div>
 
-<p className=' ml-2 mr-2'>{item.quantity}</p>
+<p
+
+
+className=' ml-2 mr-2  translate-y-[10px]  k  text-[20px]'>{item.quantity}</p>
 
 {/* increse- */}
 
 <div>
 
     <img
+    onClick={()=>increaseQuantity(item)}
     className='w-6 h-6'
     src="https://cdn4.iconfinder.com/data/icons/outline-ui-icons-1/115/add-256.png" alt="" />
 
@@ -58,6 +69,13 @@ src="https://cdn1.iconfinder.com/data/icons/basic-user-interface-7/24/delete_rem
 </div>
 
 
+
+<div
+className=' pt-3  mr-2'
+>
+  
+    <p> Total :{item.quantity * item.price}</p>
+</div>
 
             </div>
 
