@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -11,7 +12,6 @@ import {
   sendEmailVerification,
   sendSignInLinkToEmail,
   updateProfile,
-  
 } from "firebase/auth";
 
 import {
@@ -26,7 +26,7 @@ import {
   query,
   where,
   FieldPath,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -53,6 +53,10 @@ const AuthContext = ({ children }) => {
   });
   const [filteredproducts, setFilteredproducts] = useState([]);
   const [selected, setSelected] = useState({});
+  const [usercart, setusercart] = useState(false);
+  const [productid, setProductid] = useState("");
+  const [checexist, setChecexist] = useState(false);
+  const [refreshcart, setRefreshcart] = useState(false);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -170,7 +174,7 @@ const AuthContext = ({ children }) => {
         }));
 
         setProducts(productsArr);
-      //  console.log("All products is fetched", productsArr, "");
+        //  console.log("All products is fetched", productsArr, "");
       }
     );
   }, []);
@@ -185,7 +189,7 @@ const AuthContext = ({ children }) => {
       filterarray.maxprice == 100000 &&
       filterarray.orderby == ""
     ) {
-     // console.log("filtered is null fetccccccccccch all");
+      // console.log("filtered is null fetccccccccccch all");
 
       onSnapshot(
         query(collection(db, "products"), orderBy("name", "desc")),
@@ -196,14 +200,14 @@ const AuthContext = ({ children }) => {
           }));
 
           setFilteredproducts(productsArr);
-          console.log(      "All Filtered---------> products is fetched",   productsArr, ""  );
+          console.log(
+            "All Filtered---------> products is fetched",
+            productsArr,
+            ""
+          );
         }
       );
-    } 
-    
-    
-    else { 
-    
+    } else {
       const productsRef = collection(db, "products");
 
       console.log(
@@ -213,66 +217,55 @@ const AuthContext = ({ children }) => {
         filterarray.maxprice
       );
 
-      
-const filtrcat = filterarray.category == '' ? where('category', 'in' , ['men', 'kids','women']) :
-where('category', '==' , `${filterarray.category}`)
+      const filtrcat =
+        filterarray.category == ""
+          ? where("category", "in", ["men", "kids", "women"])
+          : where("category", "==", `${filterarray.category}`);
 
+      const maxprice = filterarray.maxprice;
+      const minprice = filterarray.minprice;
 
+      // switch condition
+      let filterprice;
+      let filtername;
 
-      const maxprice = filterarray.maxprice  
-      const minprice = filterarray.minprice  
+      switch (filterarray.orderby) {
+        case "asc-price":
+          console.log("asc-price");
+          filterprice = orderBy("price", "asc");
+          filtername = orderBy("name", "asc");
 
+          break;
 
-// switch condition
-let filterprice 
-let filtername
+        case "desc-price":
+          filterprice = orderBy("price", "asc");
+          filtername = orderBy("name", "asc");
 
-switch (filterarray.orderby) {
-  case "asc-price":
-    console.log("asc-price");
-   filterprice = orderBy("price", "asc"); 
-      filtername = orderBy("name", "asc");
-   
-  
-    break;
+          break;
+        case "asc":
+          filterprice = orderBy("price", "asc");
+          filtername = orderBy("name", "asc");
 
-  case "desc-price":
+          break;
+        case "desc":
+          filterprice = orderBy("price", "desc");
+          filtername = orderBy("name", "desc");
 
-    filterprice = orderBy("price", "asc"); 
-      filtername = orderBy("name", "asc");
+        default:
+          break;
+      }
 
-
-    break;
-    case "asc":
-      filterprice = orderBy("price", "asc");
-      filtername = orderBy("name", "asc");
-
-      break;
-    case "desc":
-      filterprice = orderBy("price", "desc");
-      filtername = orderBy("name", "desc");
-
-  default:
-    break;
-}
-
-
-
-
-
- console.log("orderfilter______________", filterprice, filtername);
-
+      console.log("orderfilter______________", filterprice, filtername);
 
       onSnapshot(
         query(
           collection(db, "products"),
-           filtrcat,
-         
+          filtrcat,
+
           where("price", ">", `${minprice} `),
           where("price", "<", `${maxprice}`),
           orderBy("price", "asc"),
-            orderBy("name", 'asc')
-          ,
+          orderBy("name", "asc")
         ),
         (snapshot) => {
           const productsArr = snapshot.docs.map((doc) => ({
@@ -280,7 +273,13 @@ switch (filterarray.orderby) {
             ...doc.data(),
           }));
           //  console.log("RESponse", productsArr,'');
-          console.log("minprice", minprice,'maxprice',maxprice,filterarray.category);
+          console.log(
+            "minprice",
+            minprice,
+            "maxprice",
+            maxprice,
+            filterarray.category
+          );
 
           setFilteredproducts(productsArr);
           console.log(
@@ -290,81 +289,126 @@ switch (filterarray.orderby) {
           );
         }
       );
-
-   
     }
   }, [filterarray]);
 
+  // search by name
+
+  const searchByName = (name) => {
+    // go to shop page
+    // set searchname to name
+  };
+
+  // add product to current user cart
+
+  const addtocart = async (product) => {
+   // console.log("product", product.id);
+
+    const userpath = doc(db, "users", `${userinfo?.email}`);
+    const cart = await (await getDoc(userpath)).data().cart;
+    // console.log("cart", cart); // cart is an array itis working
+
+    const exist = cart.filter(
+      (item) =>
+        // indexof is used to check if the item is already in the cart
+        item.id === product.id
+    );
+    //console.log("exist", exist);
+
+    if (exist.length === 0 || exist === []) {
+    //  console.log("product is notexist in cart add it", exist);
+
+      console.log(checexist);
+
+      product.quantity = 1;
+
+      await updateDoc(userpath, {
+        cart: [...cart, product],
+      });
+
+      setChecexist(true);
+    }
+
+    // if exist.length is not 0 and product is exist in the cart  //
+    else {
+     // console.log("product is exist in cart remove it  ", exist);
+
+      
+
+      await updateDoc(userpath, {
+        cart: cart.filter((item) => item.id !== product.id), // delete product from cart if exist
+
+        // onother option  increase the quantity of the product if exist
+
+        // make loop to all cart products and increase the quantity  where product id is equal to the product id in the cart
+
+        // cart: cart.map((item) => {
+        //   if (item.id === product.id) {
+        //     item.quantity += 1;
+        //   }
+        //   return item;
+        // }),
+      });
+
+     
+    }
+  };
+
+  // current user cart
+
+  useEffect(() => {
+    const usercart = async () => {
+      const userpath = doc(db, "users", `${userinfo?.email}`);
+      const cart = await (await getDoc(userpath)).data()?.cart;
+
+      console.log("cart is refreshed", cart);
+
+      setusercart(cart);
+    };
+
+    const isexist = async () => {
+      // chec if product is in the cart by id
+      const userpath = doc(db, "users", `${userinfo?.email}`);
+      const cart = await (await getDoc(userpath)).data()?.cart;
+
+      const checkglobal = await cart?.filter((item) => item.id === productid);
+
+      console.log("checkglobal", checkglobal);
+
+
+      if (checkglobal?.length === 0 || checkglobal === []){
+        setChecexist(false);
+console.log("product is notexist in cart global", checkglobal);
+      }
+
+      else{
+        setChecexist(true);
+        console.log("product is exist in cart global", checkglobal);
+      }
 
 
 
-// search by name
-
-const searchByName = (name) => {
-
-// go to shop page
-// set searchname to name
 
 
-
-}
-
+    };
 
 
-// add product to current user cart
+    usercart().then(() => isexist());
+    
 
-const addtocart = async (product) => {
+    
 
-console.log("product", product.id);
+    //getusercart()
+  }, [userinfo, productid,refreshcart ]);
 
-const userpath = doc(db, "users", `${userinfo?.email}`)
-const cart = await (await getDoc(userpath)).data().cart;
-  console.log("cart", cart); // cart is an array itis working
-
-  const exist = cart.filter(
-    (item) =>
-      // indexof is used to check if the item is already in the cart
-      item.id === product.id
-  );
-  console.log("exist", exist);
-
-  if (exist.length === 0 || exist === []) {
-    console.log("notexist length is 0", exist);
-
-    product.quantity = 1;
-
-    await updateDoc(userpath, {
-      cart: [...cart, product],
-    });
-  }
-
-  // if exist.length is not 0 and product is exist in the cart  //
-  else {
-    console.log("exist length is not 0", exist);
-
-    await updateDoc(userpath, {
-      cart: cart.filter((item) => item.id !== product.id), // delete product from cart if exist
-
-      // onother option  increase the quantity of the product if exist
-
-      // make loop to all cart products and increase the quantity  where product id is equal to the product id in the cart
-
-      // cart: cart.map((item) => {
-      //   if (item.id === product.id) {
-      //     item.quantity += 1;
-      //   }
-      //   return item;
-      // }),
-    });
-  
-};
-
-}
-
-
-
-
-
+  const getusercart = async () => {
+    //console.log("executed user cart");
+    //   const userpath = doc(db, "users", `${userinfo?.email}`)
+    //   const cart = await (await getDoc(userpath)).data()?.cart;
+    //     console.log("cart", cart);
+    // setusercart(cart);
+    //console.log("usercart", usercart);
+  };
 
   const value = {
     signUp,
@@ -385,8 +429,13 @@ const cart = await (await getDoc(userpath)).data().cart;
     setFilterarray,
     filteredproducts,
     setFilteredproducts,
-    selected, setSelected
-    ,addtocart
+    selected,
+    setSelected,
+    addtocart,
+    usercart,
+    productid,
+    setProductid,
+    setRefreshcart,refreshcart
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
