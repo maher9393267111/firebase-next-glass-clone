@@ -5,7 +5,7 @@ import { useState,useEffect } from 'react';
 const Cartitem = ({item}) => {
 
 
-const {increaseQuantity, decreaseQuantity} = useAuth();
+const {increaseQuantity, decreaseQuantity, deleteProductfromCart } = useAuth();
 
     return (
         <div>
@@ -40,7 +40,7 @@ className='  w-[27px] h-[27px] rounded-full'
 </div>
 
 
-<div className=' mr-20 h-[77px] flex items-center'>
+<div className=' mr-20 h-[78px] flex items-center'>
 
 {/* -decrease- */}
     <div>
@@ -77,6 +77,14 @@ className=' pt-3  mr-2'
     <p> Total :{item.quantity * item.price}</p>
 </div>
 
+
+
+<div>
+   <img
+   onClick={()=>deleteProductfromCart(item)}
+   className=' w-6 h-6'
+   src="https://cdn2.iconfinder.com/data/icons/top-search/128/_delete_close_remove_circle_cancel_delete_trash-128.png" alt="" />
+</div>
             </div>
 
 

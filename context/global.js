@@ -307,17 +307,17 @@ const AuthContext = ({ children }) => {
     // console.log("product", product.id);
 
     const userpath = doc(db, "users", `${userinfo?.email}`);
-    const cart = await (await getDoc(userpath)).data().cart;
+    const cart = await (await getDoc(userpath)).data()?.cart;
     // console.log("cart", cart); // cart is an array itis working
 
-    const exist = cart.filter(
+    const exist = cart?.filter(
       (item) =>
         // indexof is used to check if the item is already in the cart
         item.id === product.id
     );
     //console.log("exist", exist);
 
-    if (exist.length === 0 || exist === []) {
+    if (exist?.length === 0 || exist === []) {
       //  console.log("product is notexist in cart add it", exist);
 
       console.log(checexist);
@@ -326,9 +326,22 @@ const AuthContext = ({ children }) => {
 
       await updateDoc(userpath, {
         cart: [...cart, product],
+        totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
       });
 
       setChecexist(true);
+
+  // total price of the cart
+  const totalpriced = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }
+    , 0);
+  setTotalprice(totalpriced);
+  console.log("totalprice when addddddd to cart -------->", totalprice);
+
+
+
+
     }
 
     // if exist.length is not 0 and product is exist in the cart  //
@@ -336,7 +349,8 @@ const AuthContext = ({ children }) => {
       // console.log("product is exist in cart remove it  ", exist);
 
       await updateDoc(userpath, {
-        cart: cart.filter((item) => item.id !== product.id), // delete product from cart if exist
+        cart: cart?.filter((item) => item.id !== product.id), // delete product from cart if exist
+        totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
 
         // onother option  increase the quantity of the product if exist
 
@@ -349,6 +363,17 @@ const AuthContext = ({ children }) => {
         //   return item;
         // }),
       });
+
+
+   // total price of the cart
+ const totalpriced = cart.reduce((acc, item) => {
+  return acc + item.price * item.quantity;
+}
+  , 0);
+setTotalprice(totalpriced);
+console.log("totalprice when addddddd to cart -------->", totalprice);
+
+
     }
   };
 
@@ -408,16 +433,19 @@ const AuthContext = ({ children }) => {
         }
         return item;
       }),
+
+totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
+
     });
 
     setusercart(cart);
 
  // total price of the cart
- const totalprice = cart.reduce((acc, item) => {
+ const totalpriced = cart.reduce((acc, item) => {
   return acc + item.price * item.quantity;
 }
   , 0);
-setTotalprice(totalprice);
+setTotalprice(totalpriced);
 console.log("totalprice-------->", totalprice);
 
 
@@ -449,20 +477,41 @@ else {
       }
       return item;
     }),
+    totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
   });
 
   setusercart(cart);
 
   // total price of the cart
-  const totalprice = cart.reduce((acc, item) => {
+  const totalpriced = cart.reduce((acc, item) => {
     return acc + item.price * item.quantity;
   }
     , 0);
-  setTotalprice(totalprice);
+  setTotalprice(totalpriced);
+  console.log("totalprice when decrease-------->", totalprice);
 
 
 
 };
+
+
+
+// delete the product from the cart and update in firebase
+
+const deleteProductfromCart = async (product) => {  
+
+const userpath = doc(db, "users", `${userinfo?.email}`);
+
+  const cart = await (await getDoc(userpath)).data()?.cart;
+
+  await updateDoc(userpath, {
+    cart: cart.filter((item) => item.id !== product.id),
+    totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
+  });
+
+  setusercart(cart);
+
+}
 
 
 
@@ -498,7 +547,10 @@ else {
     carbarsend,
     setCarbarsend,
     increaseQuantity,
-    decreaseQuantity
+    decreaseQuantity,
+    setTotalprice,
+    totalprice,
+    deleteProductfromCart 
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
