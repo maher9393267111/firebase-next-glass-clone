@@ -58,6 +58,7 @@ const AuthContext = ({ children }) => {
   const [checexist, setChecexist] = useState(false);
   const [refreshcart, setRefreshcart] = useState(false);
   const [carbarsend, setCarbarsend] = useState([]);
+  const [totalprice,setTotalprice] = useState(0);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -411,6 +412,15 @@ const AuthContext = ({ children }) => {
 
     setusercart(cart);
 
+ // total price of the cart
+ const totalprice = cart.reduce((acc, item) => {
+  return acc + item.price * item.quantity;
+}
+  , 0);
+setTotalprice(totalprice);
+console.log("totalprice-------->", totalprice);
+
+
 
 
   };
@@ -442,6 +452,13 @@ else {
   });
 
   setusercart(cart);
+
+  // total price of the cart
+  const totalprice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }
+    , 0);
+  setTotalprice(totalprice);
 
 
 
