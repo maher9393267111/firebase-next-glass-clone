@@ -16,7 +16,7 @@ console.log("route", route);
 
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
-  const { currentUser, logout, userinfo,setSearchkyword } = useAuth();
+  const { currentUser, logout, userinfo,setSearchkyword, searchkyword } = useAuth();
   const [addfixed, setAddfixed] = useState("");
   const { showDrawer, onClose } = diffcontext();
 
@@ -37,7 +37,6 @@ console.log("route", route);
 
 
 
-
 // if end the page remove fixed
 if (window.scrollheight === window.scrollY) {
 
@@ -47,6 +46,36 @@ if (window.scrollheight === window.scrollY) {
 
     window.addEventListener("scroll", scrollfunction);
   }, []);
+
+
+
+// onkey press in input go to search page
+
+
+const onKeyUp2 = (e) => {
+  e.preventDefault();
+  if (e.keyCode === 13) {
+    // dispatch(setTextFilter(searchInput));
+    e.target.blur();
+  
+
+
+  router.push(`/search`);
+  }
+};
+
+
+const handleKeyDown =(e) => {
+ if (searchkyword  !== '') {
+   router.push('/search')
+  }
+ }
+
+
+
+
+
+
 
   return (
     <div className=" ">
@@ -174,7 +203,9 @@ if (window.scrollheight === window.scrollY) {
                           onClick={() => setShow(true)}
                           className=" flex gap-2   cursor-pointer justify-center"
                         >
-                          <p>filter</p>
+                          <p
+                         
+                          >filter</p>
                           <p>
                             <img
                               className="  w-6 h-6"
@@ -211,7 +242,11 @@ if (window.scrollheight === window.scrollY) {
                             </svg>
                           </div>
                           <input
-
+  
+  //onKeyPress={ handleKeyDown}
+  onBlur={handleKeyDown}
+  
+//value ={ searchkyword}
                           onChange = {(e) => setSearchkyword(e.target.value)}
                             type="text"
                             id="simple-search"
