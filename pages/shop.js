@@ -11,6 +11,8 @@ const Shop = () => {
     filterarray,
     setFilterarray,
     selected,
+    searchkyword,
+  
   } = useAuth();
 
   const notify = () => toast("Wow so easy!");
@@ -26,7 +28,7 @@ const Shop = () => {
 <div>
     <h1
     className=" text-2xl font-bold  pb-6  text-center mt-6 mb-6"
-    >Shop Products</h1>
+    >Shop Products  </h1>
 </div>
 
 {/* ---all products- */}

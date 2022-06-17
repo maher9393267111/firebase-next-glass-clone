@@ -59,6 +59,7 @@ const AuthContext = ({ children }) => {
   const [refreshcart, setRefreshcart] = useState(false);
   const [carbarsend, setCarbarsend] = useState([]);
   const [totalprice,setTotalprice] = useState(0);
+  const [searchkyword,setSearchkyword] = useState("");
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -327,7 +328,18 @@ const AuthContext = ({ children }) => {
       await updateDoc(userpath, {
         cart: [...cart, product],
         totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
-      });
+      }).then(async() => {
+        const cart = await (await getDoc(userpath)).data()?.cart;
+        // update totla price 
+        await updateDoc(userpath, {
+          totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
+        })
+
+
+      })
+
+
+
 
       setChecexist(true);
 
@@ -502,14 +514,19 @@ const deleteProductfromCart = async (product) => {
 
 const userpath = doc(db, "users", `${userinfo?.email}`);
 
-  const cart = await (await getDoc(userpath)).data()?.cart;
+const cart = await (await getDoc(userpath)).data()?.cart;
 
   await updateDoc(userpath, {
     cart: cart.filter((item) => item.id !== product.id),
     totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
-  });
+  }).then(async() => {
+    const cart = await (await getDoc(userpath)).data()?.cart;
 
-  setusercart(cart);
+
+    console.log("cart after delete", cart.length);
+    setusercart(cart);
+  } );
+
 
 }
 
@@ -550,7 +567,8 @@ const userpath = doc(db, "users", `${userinfo?.email}`);
     decreaseQuantity,
     setTotalprice,
     totalprice,
-    deleteProductfromCart 
+    deleteProductfromCart ,
+    searchkyword,setSearchkyword
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

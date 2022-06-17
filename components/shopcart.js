@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/global";
 import { toast } from "react-toastify";
 import { async } from "@firebase/util";
+
 const Shopcart = ({ product }) => {
   const {
     addtocart,

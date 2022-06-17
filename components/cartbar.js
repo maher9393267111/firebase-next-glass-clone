@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { diffcontext } from "../context/diff";
 import { useAuth } from "../context/global";
 import CartItem from "./cartitem";
+import { AnimatePresence,motion } from "framer-motion";
 
 const Cartbar = () => {
   const [cartitems, setCartitems] = useState([]);
@@ -44,35 +45,56 @@ const Cartbar = () => {
       >
         {/* ----content- */}
 
+        {cartitems?.length > 0 ? (
+
+
         <div>
+
+  
           <h1>{cartitems?.length}</h1>
+
+
+
+
+
+          <AnimatePresence>
           <div>
             {cartitems &&
               cartitems.length > 0 &&
               cartitems.map((item, index) => {
+
                 return (
+                  <motion.div
+                    key={index}
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  transition={{duration: 3}}
+              >
                   <div>
                     <CartItem item={item} key={index} />
                   </div>
+              </motion.div>
                 );
               })}
           </div>
+          </AnimatePresence>
 
 <div>
 
 <div>
 <h1>total price</h1>
 
-<div className=" flex justify-between ml-6 mr-6">
+<div className=" flex justify-between ml-6 mr-6  items-center ">
 
 
 
 <div>
-  <h1>{totalprice}</h1>
+  <h1 className=" font-bold text-xl">{totalprice}$</h1>
 </div>
 
-<div>
-  <button>Checkout</button>
+<div className=" w-[200px]">
+<button type="button" class="text-white block w-full  bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Checkout</button>
 </div>
 
 
@@ -88,6 +110,7 @@ const Cartbar = () => {
 
 
         </div>
+        ) : (  <div className=" text-xl  font-bold">  <h1>Cart is Empty</h1></div> ) }
       </Drawer>
     </>
   );

@@ -16,7 +16,7 @@ console.log("route", route);
 
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
-  const { currentUser, logout, userinfo } = useAuth();
+  const { currentUser, logout, userinfo,setSearchkyword } = useAuth();
   const [addfixed, setAddfixed] = useState("");
   const { showDrawer, onClose } = diffcontext();
 
@@ -50,6 +50,7 @@ if (window.scrollheight === window.scrollY) {
 
   return (
     <div className=" ">
+    
       <div>
         {/* {userinfo?.name} */}
         <Row
@@ -210,6 +211,8 @@ if (window.scrollheight === window.scrollY) {
                             </svg>
                           </div>
                           <input
+
+                          onChange = {(e) => setSearchkyword(e.target.value)}
                             type="text"
                             id="simple-search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
