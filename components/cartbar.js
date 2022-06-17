@@ -2,11 +2,33 @@ import React from 'react';
 import { Button, Drawer } from 'antd';
 import {useState, useEffect} from 'react';
 import { diffcontext } from '../context/diff';
+import { useAuth } from '../context/global';
+
+
 const Cartbar  = () => {
+
+  const [cartitems, setCartitems] = useState([]);
+  const {showDrawer, onClose,visible} = diffcontext();
+  
+  const {usercart} = useAuth();
+
+   
+  useEffect(() => {
+
+  //  if(usercart.length > 0){
+
+
+      setCartitems(usercart);
+      console.log('cart cartbar----->',cartitems);
+
+
+   // }
+  }, [usercart,showDrawer]);
+
+
+
   
   
-  
-    const {showDrawer, onClose,visible} = diffcontext();
   
     return (
       <>
@@ -19,9 +41,39 @@ style = {{transition : ' all2.5s  ease-in-out'}}
 
         className='  transition-all   duration-500'
         title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+        
+
+{/* ----content- */}
+
+
+<div>
+
+
+
+<div>
+
+{ cartitems && cartitems.length >0 &&   cartitems.map((item,index)=>{
+return (
+
+<div>
+
+<div>
+  <img
+  className=' rounded w-12 h-12 object-cover'
+  src={item.images[0].image} alt="" />
+</div>
+
+</div>
+
+)})}
+
+
+</div>
+
+
+</div>
+
+
         </Drawer>
       </>
     );

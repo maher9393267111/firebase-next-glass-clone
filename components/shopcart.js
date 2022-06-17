@@ -2,42 +2,51 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/global";
 const Shopcart = ({ product }) => {
-  const { addtocart, usercart, productid, setProductid,setChecexist,checexist,setRefreshcart ,refreshcart} = useAuth();
+  const {
+    addtocart,
+    usercart,
+    productid,
+    setProductid,
+    setRefreshcart,
+    refreshcart,
+    
+  } = useAuth();
   const [incart, setincart] = useState(false);
 
-  const handleproductid = (product) => {
-    addtocart(product);
+  const handleproductid = async (product) => {
+    await addtocart(product);
+    await setRefreshcart(!refreshcart);
 
     setProductid(product.id);
 
-    setRefreshcart(!refreshcart);
+    console.log(usercart.length);
 
-    
-    
+
+ const checkme=     setincart(usercart.findIndex((item) => item.id === productid) == -1)
+ //   await usercart.filter((item) => item.id == product.id)
+console.log('checkme------>',checkme);
+
+
+   
+
+        
+      
+ 
+
+
+
+
   };
 
   return (
     <div className="  w-[333px] h-[288px]   overflow-y-hidden border-2 border-blue-600">
       <div class="card  bg-slate-400">
         
-{/* <div>
-
-{usercart && usercart.length > 0 &&  usercart.map((item) => {
-
-return (
-<div>
-    <h1>{item?.name}</h1>
-</div>
-)
-
-})}
-</div> */}
-<div>
-    <h1>{checexist ? 'in cart' : 'not in cart'}</h1>
-</div>
 
 
-        <div onClick={(e) => handleproductid(product)} class="cardTop">
+
+
+        <div  class="cardTop">
           <img className="h-full w-full" src={product.images[0].image} alt="" />
         </div>
         <div class="cardBottom">
@@ -54,10 +63,11 @@ return (
             <div class="cardHoverText">
               <div>
                 <button
+                onClick={(e) => handleproductid(product)}
                   type="button"
-                  class="text-white  block w-full bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  class={` ${incart ? ' block w-full bg-gray-800  text-white' : 'text-black bg-white block w-full '}  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 `}
                 >
-                  Add to cart
+               {!incart ? ' Add to cart ' : 'Remove from cart'}  
                 </button>
               </div>
             </div>

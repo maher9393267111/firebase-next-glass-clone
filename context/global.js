@@ -372,18 +372,19 @@ const AuthContext = ({ children }) => {
       const cart = await (await getDoc(userpath)).data()?.cart;
 
       const checkglobal = await cart?.filter((item) => item.id === productid);
+      
 
-      console.log("checkglobal", checkglobal);
+    //  console.log("checkglobal", checkglobal);
 
 
       if (checkglobal?.length === 0 || checkglobal === []){
         setChecexist(false);
-console.log("product is notexist in cart global", checkglobal);
+//console.log("product is notexist in cart global", checkglobal);
       }
 
       else{
         setChecexist(true);
-        console.log("product is exist in cart global", checkglobal);
+       // console.log("product is exist in cart global", checkglobal);
       }
 
 
@@ -402,12 +403,10 @@ console.log("product is notexist in cart global", checkglobal);
   }, [userinfo, productid,refreshcart ]);
 
   const getusercart = async () => {
-    //console.log("executed user cart");
-    //   const userpath = doc(db, "users", `${userinfo?.email}`)
-    //   const cart = await (await getDoc(userpath)).data()?.cart;
-    //     console.log("cart", cart);
-    // setusercart(cart);
-    //console.log("usercart", usercart);
+    console.log("executed user cart");
+      const userpath = doc(db, "users", `${userinfo?.email}`)
+      const cart = await (await getDoc(userpath)).data()?.cart;
+     return cart;
   };
 
   const value = {

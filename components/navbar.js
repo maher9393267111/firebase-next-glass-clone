@@ -5,8 +5,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { diffcontext } from "../context/diff";
 import { useGetRecoilValueInfo_UNSTABLE } from "recoil";
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
+
+// now cuerrent path
+const router = useRouter()
+const route = router.pathname;
+console.log("route", route);
+
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
   const { currentUser, logout, userinfo } = useAuth();
@@ -25,6 +32,9 @@ const Navbar = () => {
 
 
     };
+
+
+
 
 
 
@@ -81,6 +91,8 @@ if (window.scrollheight === window.scrollY) {
                         </Link>
                         {/* {currentUser?.email} */}
                       </li>
+
+                   
                       <li
                         onClick={() => setActive("shop")}
                         className={`${
@@ -101,6 +113,7 @@ if (window.scrollheight === window.scrollY) {
                         </Link>
                       
                       </li>
+
                       <li
                       
                       >
@@ -153,6 +166,8 @@ if (window.scrollheight === window.scrollY) {
                     {/* ---filter- */}
 
                     <div className=" pt-[10px]">
+
+                    { route === '/shop'  && 
                       <div>
                         <div
                           onClick={() => setShow(true)}
@@ -167,7 +182,9 @@ if (window.scrollheight === window.scrollY) {
                             />
                           </p>
                         </div>
+
                       </div>
+}
                     </div>
 
                     {/* -search input- */}
