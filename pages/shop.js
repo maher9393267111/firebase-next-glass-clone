@@ -16,7 +16,7 @@ const Shop = () => {
   const notify = () => toast("Wow so easy!");
 
   return (
-    <div>
+    <div className="  min-h-[130vh]">
       <div>
 
 

@@ -11,80 +11,63 @@ const Shopcart = ({ product }) => {
     setProductid,
     setRefreshcart,
     refreshcart,
-    carbarsend, 
+    carbarsend,
   } = useAuth();
   const [incart, setincart] = useState(false);
 
   const handleproductid = async (product) => {
-    await addtocart(product);
+
+// onlysend on colorwith his images  to acart
+
+const selecteditems= {}
+
+selecteditems.id = product.id;
+selecteditems.name = product.name;
+selecteditems.price = product.price;
+selecteditems.image = product.images[0].image;
+selecteditems.color = product.images[0].color;
+selecteditems.category = product.category;
+selecteditems.title = product.title;
+
+
+
+
+    await addtocart(selecteditems);
     await setRefreshcart(!refreshcart);
 
     setProductid(product.id);
 
+    console.log(carbarsend.length);
 
-
-
-
-  console.log(carbarsend.length);
-
-  toast.success(`${carbarsend.length} items  in cart`);
-
- 
-  const arr=[]
-  await carbarsend.map((item)=>{
-    arr.push(item.id)
-  }
-  )
-  
-  
-   
-      console.log('arr',arr)
-      console.log(`hello ${incart ,'productid-----------',product.id} `);
-
-
-
-
-
+    toast.success(`${carbarsend.length} items  in cart`);
   };
 
+  useEffect(() => {
+    if (carbarsend?.length > 0) {
+      const hello = carbarsend.filter((item) => {
+        return item.id === product.id;
+      });
 
-
-
-useEffect(() => {
-
-if (carbarsend?.length > 0) {
-
-
-  const hello =  carbarsend.filter((item) => { return item.id === product.id });
-
-  if (hello.length > 0) {
-    setincart(true);
-  }
-
-  else {
-    setincart(false);
-  }
-  console.log('hello',hello)
-  }
-
-}, [carbarsend]);
-
-
-
-
-
+      if (hello.length > 0) {
+        setincart(true);
+      } else {
+        setincart(false);
+      }
+      //console.log('hello',hello)
+    }
+  }, [carbarsend]);
 
   return (
     <div className="  w-[333px] h-[288px]   overflow-y-hidden border-2 border-blue-600">
       <div class="card  bg-slate-400">
         <div class="cardTop">
-          <img className="h-full w-full" src={product.images[0].image} alt="" />
+          <img className="h-full w-full" src={product?.images[0]?.image} alt="" />
         </div>
         <div class="cardBottom">
           <div class="cardText">
             {/* <!--       Title and description will always show --> */}
             <h3 class="cardTitle">
-              {product?.name}   {carbarsend?.length}
+              {product?.name} 
             </h3>
             <h4 class="cardInfo">
               {product?.category} {usercart?.length}
