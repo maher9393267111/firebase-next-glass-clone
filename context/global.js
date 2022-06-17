@@ -57,6 +57,7 @@ const AuthContext = ({ children }) => {
   const [productid, setProductid] = useState("");
   const [checexist, setChecexist] = useState(false);
   const [refreshcart, setRefreshcart] = useState(false);
+  const [carbarsend, setCarbarsend] = useState([]);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -434,7 +435,8 @@ const AuthContext = ({ children }) => {
     usercart,
     productid,
     setProductid,
-    setRefreshcart,refreshcart
+    setRefreshcart,refreshcart,
+    carbarsend, setCarbarsend
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

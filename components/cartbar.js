@@ -10,7 +10,7 @@ const Cartbar  = () => {
   const [cartitems, setCartitems] = useState([]);
   const {showDrawer, onClose,visible} = diffcontext();
   
-  const {usercart} = useAuth();
+  const {usercart,setCarbarsend} = useAuth();
 
    
   useEffect(() => {
@@ -19,6 +19,7 @@ const Cartbar  = () => {
 
 
       setCartitems(usercart);
+      setCarbarsend(usercart);
       console.log('cart cartbar----->',cartitems);
 
 
@@ -49,7 +50,7 @@ style = {{transition : ' all2.5s  ease-in-out'}}
 <div>
 
 
-
+<h1>{cartitems?.length}</h1>
 <div>
 
 { cartitems && cartitems.length >0 &&   cartitems.map((item,index)=>{
