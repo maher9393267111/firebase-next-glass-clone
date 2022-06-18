@@ -43,3 +43,11 @@ useEffect(() => {
     //console.log('hello',hello)
   }
 }, [carbarsend]);
+
+
+
+
+console.log("executed user cart");
+const userpath = doc(db, "users", `${userinfo?.email}`);
+const cart = await (await getDoc(userpath)).data()?.cart;
+return cart;

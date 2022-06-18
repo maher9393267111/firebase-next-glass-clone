@@ -72,6 +72,14 @@ console.log("cart sub---> ⏩⏩⏩⏩⏩⏩⏩⏩⏩⏩⏩⏩⏩", cartsub); //
 
 
 
+// cart fetch
+
+
+;
+
+
+
+
 
 
 const [name, setName] = useState("ahmad");
