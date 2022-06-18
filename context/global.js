@@ -35,6 +35,7 @@ import { useContext } from "react";
 import { createContext } from "react";
 import { auth, db } from "../firebase";
 import {fetchUserInfo} from '../store/actions';
+import {  setUserInfo } from '../store/global';
 import { useDispatch } from "react-redux";
 
 const authContext = createContext();
@@ -554,7 +555,7 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
   const userafterupdated = await (await getDoc(userpath)).data();
   setUserinfo(userafterupdated);
   setUpdatedis(!updatedis);
-  dispatch(fetchUserInfo());
+  dispatch(setUserInfo(userafterupdated));
   setdene(userafterupdated?.name);
   console.log('userinfo after update DATA', userinfo?.name);
   });
