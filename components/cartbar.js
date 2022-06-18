@@ -4,22 +4,24 @@ import { useState, useEffect } from "react";
 import { diffcontext } from "../context/diff";
 import { useAuth } from "../context/global";
 import CartItem from "./cartitem";
+import {doc,getDoc}  from "firebase/firestore";
+import {db} from "../firebase";
 import { AnimatePresence,motion } from "framer-motion";
 
 const Cartbar = () => {
   const [cartitems, setCartitems] = useState([]);
   const { showDrawer, onClose, visible } = diffcontext();
 
-  const { usercart, setCarbarsend ,totalprice,setTotalprice} = useAuth();
-
-  console.log('totla price in sidebar---->',totalprice);
+  const { usercart, setCarbarsend ,totalprice,setTotalprice,userinfo,dene} = useAuth();
+console.log('dene',dene)
+  //console.log('totla price in sidebar---->',totalprice);
 
   useEffect(() => {
     //  if(usercart.length > 0){
 
     setCartitems(usercart);
     setCarbarsend(usercart);
-    console.log("cart cartbar----->", cartitems);
+  //  console.log("cart cartbar----->", cartitems);
     if (usercart  === []   || usercart?.length < 1) {
 
       // reset total price
@@ -28,6 +30,11 @@ const Cartbar = () => {
 
     // }
   }, [usercart, showDrawer]);
+
+
+  
+
+
 
   return (
     <>
@@ -44,6 +51,12 @@ const Cartbar = () => {
         visible={visible}
       >
         {/* ----content- */}
+
+<div>
+  
+  {dene}
+  <img className=" w-12 h-12 rounded-full" src={userinfo?.image} alt="" />
+</div>
 
         {cartitems?.length > 0 ? (
 

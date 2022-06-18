@@ -50,6 +50,7 @@ const AuthContext = ({ children }) => {
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
+  const [dene,setdene ] = useState('');
   const [filterarray, setFilterarray] = useState({
     category: "",
     minprice: 0,
@@ -64,7 +65,7 @@ const AuthContext = ({ children }) => {
   const [refreshcart, setRefreshcart] = useState(false);
   const [carbarsend, setCarbarsend] = useState([]);
   const [totalprice,setTotalprice] = useState(0);
-  const [searchkyword,setSearchkyword] = useState("");
+  const [searchkyword,setSearchkyword] = useState("dene");
   const [updatedis,setUpdatedis] = useState(false);
 
   const signUp = async (email, password, name) => {
@@ -550,10 +551,11 @@ const updateUserInfo = async (userinfo) => {
   }).then(async() => {
 console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
     // after udpate user info in firebase set it to the state
-  const userafterupdated = await (await getDoc(userpath)).data()?.userinfo;
+  const userafterupdated = await (await getDoc(userpath)).data();
   setUserinfo(userafterupdated);
   setUpdatedis(!updatedis);
   dispatch(fetchUserInfo(userafterupdated));
+  setdene(userafterupdated?.name);
   console.log('userinfo after update DATA', userinfo?.name);
   });
    
@@ -619,7 +621,7 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
     totalprice,
     deleteProductfromCart ,
     searchkyword,setSearchkyword,
-    updateUserInfo, setUpdatedis, updatedis,
+    updateUserInfo, setUpdatedis, updatedis, dene
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
