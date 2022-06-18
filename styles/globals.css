@@ -4,6 +4,13 @@
 
 
 
+body{
+min-height: 120vh;
+
+
+}
+
+
 
 .navlist >li {
 
@@ -136,4 +143,11 @@ object-fit: cover;
   height: 24%;
   opacity: 0.8;
   transition: 0.7s all ease;
+}
+
+
+.avatar-user{
+  top: -51px;
+  position: relative;
+  left: 16px;
 }

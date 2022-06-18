@@ -532,6 +532,31 @@ const cart = await (await getDoc(userpath)).data()?.cart;
 
 
 
+// update user info in firebase
+
+const updateUserInfo = async (userinfo) => {
+
+
+  const userpath = doc(db, "users", `${userinfo?.email}`);
+
+  await updateDoc(userpath, {
+    ...userinfo,
+  }).then(() => {
+
+    console.log("user info updated successfully");
+  });
+   
+
+  // after udpate user info in firebase set it to the state
+  const userafterupdated = await (await getDoc(userpath)).data()?.userinfo;
+  setUserinfo(userafterupdated);
+
+
+
+
+}
+
+
 
 
   const value = {
@@ -568,7 +593,8 @@ const cart = await (await getDoc(userpath)).data()?.cart;
     setTotalprice,
     totalprice,
     deleteProductfromCart ,
-    searchkyword,setSearchkyword
+    searchkyword,setSearchkyword,
+    updateUserInfo
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

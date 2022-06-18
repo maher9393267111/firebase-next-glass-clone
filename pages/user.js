@@ -1,5 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
+import Usertab from '../components/usertab';
 import { AnimatePresence,motion } from "framer-motion";
 import { Tabs } from 'antd';
 const { TabPane } = Tabs;
@@ -19,10 +20,13 @@ const Userporfile = () => {
         <div>
             <h1>Userporfile</h1>
             <AnimatePresence>
-            <div className=' w-[66%] mx-auto min-h-[300px] border-2 '>
+            <div className=' w-[58%] mx-auto min-h-[650px]   bg-[#f2f2f2] border-2 '>
 
        
-            <Tabs onChange={onChange} type="card">
+            <Tabs
+            
+            style={{ marginTop:'20px',marginLeft:'20px' }}
+            onChange={onChange} type="card">
 
          
 
@@ -35,7 +39,10 @@ const Userporfile = () => {
                 exit={{opacity: 0}}
                 transition={{duration: 1}}
             >
-    Content of Tab Pane 1
+    
+<Usertab />
+
+
                 </motion.div>
 
 

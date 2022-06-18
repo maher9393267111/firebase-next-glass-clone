@@ -23,10 +23,10 @@ console.log("route", route);
   useEffect(() => {
     const scrollfunction = () => {
       if (window.scrollY > 100) {
-        console.log("addfixed", addfixed);
+      //  console.log("addfixed", addfixed);
         setAddfixed("scrollnav");
       } else {
-        console.log("remove fixed", addfixed);
+       // console.log("remove fixed", addfixed);
         setAddfixed("");
       }
 
@@ -51,18 +51,6 @@ if (window.scrollheight === window.scrollY) {
 
 // onkey press in input go to search page
 
-
-const onKeyUp2 = (e) => {
-  e.preventDefault();
-  if (e.keyCode === 13) {
-    // dispatch(setTextFilter(searchInput));
-    e.target.blur();
-  
-
-
-  router.push(`/search`);
-  }
-};
 
 
 const handleKeyDown =(e) => {
