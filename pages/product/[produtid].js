@@ -26,10 +26,43 @@ const Product = ({id}) => {
 
   const productid = router.query.produtid;
 
+  const [product, setProduct] = useState({});
  
-const [pro] = useDocumentData(doc(db, "products", productid));
+// const [pro] = 
+// console.log('pro is :--------->⏩',pro)
 
-console.log('productid is⏩⏩⏩   :--------->',pro)
+
+const fetchproduct = async () => {
+
+await getDoc(doc(db, "products", productid)).then((docSnap) => {
+  setProduct(docSnap.data());
+
+  console.log('product information is- :--------->⏩',product)
+}
+);
+
+
+}
+
+
+
+
+
+// if there params fetch product from firebase
+
+useEffect(() => {
+if (productid)
+{
+ 
+  console.log('id is changeddd--->⏩⏩⏩   :--------->',productid)
+  fetchproduct();
+
+
+}
+
+
+}, [productid]);
+
 
   return (
 
@@ -37,7 +70,10 @@ console.log('productid is⏩⏩⏩   :--------->',pro)
 <div>
  
   id is ------- {productid}
-  {pro?.name}
+  
+
+{product !== {} ? (<div>{product?.name}</div>) : (<div>No product data here</div>)}
+
 </div>
 
   );

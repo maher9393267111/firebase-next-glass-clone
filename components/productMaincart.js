@@ -1,6 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from "next/router";
 const ProductMaincart = ({product}) => {
+
+const router = useRouter();
+
+
+    const redirect = (id) => {
+        router.push(`/product/${id}`);
+      };
+
+
     return (
         <div>
             
@@ -11,11 +21,12 @@ const ProductMaincart = ({product}) => {
 <div
 className ='w-full h-[255px]'>
 
- <Link href={`/product/${product.id}`}>
+ {/* <Link href={`/product/${product.id}`}> */}
 <img 
+  onClick={() => redirect(product.id)}
 className=' w-full h-full    transition-all  duration-200    hover:rotate-6'
 src={product.images[0].image} alt="" />
-</Link>
+{/* </Link> */}
 </div>
 
 {/* info- */}
