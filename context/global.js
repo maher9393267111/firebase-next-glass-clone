@@ -554,7 +554,7 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
   const userafterupdated = await (await getDoc(userpath)).data();
   setUserinfo(userafterupdated);
   setUpdatedis(!updatedis);
-  dispatch(fetchUserInfo(userafterupdated));
+  dispatch(fetchUserInfo());
   setdene(userafterupdated?.name);
   console.log('userinfo after update DATA', userinfo?.name);
   });

@@ -68,9 +68,9 @@ const UserEditForm = ({ coverimage, userimage }) => {
       password,
       email,
       adress,
-      coverimage: coverimage ,
+      coverimage: coverimage || userinfo?.coverimage,
   
-      image:  userimage  ,
+      image:  userimage  || userinfo?.image,
     };
 
     console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀',userobject);

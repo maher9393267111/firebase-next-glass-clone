@@ -31,6 +31,7 @@
     "react-toastify": "^9.0.4",
     "recoil": "^0.7.3",
     "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
     "zustand": "^4.0.0-rc.1",
     "zustand-persist": "^0.4.0"
   },

@@ -14,9 +14,15 @@ const {userinfo} = useAuth();
 {/* --cover- */}
 <div className=' relative'>
 
+
+{! userinfo?.coverimage ?
 <img
 className=' w-full h-[222px] object-cover'
 src="https://salinaka-ecommerce.web.app/images/defaultBanner.accdc757f2c48d61f24c4fbcef2742fd.jpg" alt="" />
+: (  <img
+className=' w-full h-[222px] object-cover'
+src={userinfo?.coverimage}
+alt="" />)}
 
 
 {/* ----user image--- */}
@@ -74,13 +80,13 @@ src="https://salinaka-ecommerce.web.app/images/defaultBanner.accdc757f2c48d61f24
 <p className='mt-4'>{userinfo?.email}</p>
 
 
-{userinfo?.address ? <p className='mt-4'>{userinfo.adress}</p> : <p className='mt-4'>No address yet</p>}
+{userinfo?.adress ? <p className='mt-4'>  <p>adress:</p> {userinfo.adress}</p> : <p className='mt-4'>No address yet</p>}
 
 
 
 <p>Mobile</p>
 
-<p>{userinfo?.mobile }</p>
+<p>{userinfo?.phone }</p>
 
 
 

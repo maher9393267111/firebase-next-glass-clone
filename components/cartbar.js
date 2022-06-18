@@ -13,7 +13,7 @@ const Cartbar = () => {
   const { showDrawer, onClose, visible } = diffcontext();
 
   const { usercart, setCarbarsend ,totalprice,setTotalprice,userinfo,dene} = useAuth();
-console.log('dene',dene)
+
   //console.log('totla price in sidebar---->',totalprice);
 
   useEffect(() => {
@@ -52,11 +52,7 @@ console.log('dene',dene)
       >
         {/* ----content- */}
 
-<div>
-  
-  {dene}
-  <img className=" w-12 h-12 rounded-full" src={userinfo?.image} alt="" />
-</div>
+
 
         {cartitems?.length > 0 ? (
 

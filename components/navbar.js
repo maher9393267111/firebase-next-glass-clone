@@ -87,11 +87,13 @@ const handleKeyDown =(e) => {
                   {/* ---image-- logo-- */}
 
                   <div className=" w-[38%] ">
+                    <Link href="/">
                     <img
                       className=" sm:hidden  ml-[40px]  pb-[19px] md:block w-20 h-20  object-cover"
                       src="https://cdn2.iconfinder.com/data/icons/css-vol-1/24/adidas-256.png"
                       alt=""
                     />
+                    </Link>
                   </div>
 
                   {/* list nav- */}
