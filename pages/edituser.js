@@ -4,6 +4,8 @@ import "react-phone-input-2/lib/style.css";
 import { useAuth } from "../context/global";
 import { useEffect, useState, useRef } from "react";
 import UserEditForm from "../components/userEditForm";
+import { setname } from "../store/global";
+import { useDispatch,useSelector } from "react-redux";
 const Edituser = () => {
   const { userinfo } = useAuth();
 
@@ -14,11 +16,14 @@ const Edituser = () => {
 
   const coverimageref = useRef();
 
+  const dispatch = useDispatch()
+
+  const {name} = useSelector((state) => state.global)
+
+
   const [coverimage, setCoverimage] = React.useState("");
 
-  const handleChange = (phone) => {
-    console.log("🚀🚀🚀", phone);
-  };
+
 
   const handlechangeimage = (e) => {
     e.preventDefault();
@@ -56,12 +61,23 @@ const Edituser = () => {
     coverimageref.current.click();
   };
 
+const changename = (e) => {
+e.preventDefault();
+dispatch(setname('hhhhhhhhhhh'))
+
+}
+
+
+
   return (
     <div className=" mt-16 pb-16 mb-16 ">
       <div className=" w-[575px] mx-auto min-h-[666px] shadow-xl ">
         {/* ---cover- */}
 
-        <div className="image-cover">
+        <div
+        onClick={changename}
+        className="image-cover">
+            {name}
           <div className=" relative">
 
 {! userinfo?.coverimage ? 

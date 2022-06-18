@@ -16,7 +16,7 @@ console.log("route", route);
 
   const [active, setActive] = useState("home");
   const { show, setShow } = diffcontext();
-  const { currentUser, logout, userinfo,setSearchkyword, searchkyword } = useAuth();
+  const { currentUser, logout, userinfo,setSearchkyword, searchkyword,updatedis } = useAuth();
   const [addfixed, setAddfixed] = useState("");
   const { showDrawer, onClose } = diffcontext();
 
@@ -51,6 +51,11 @@ if (window.scrollheight === window.scrollY) {
 
 // onkey press in input go to search page
 
+
+// refresh page when userinfo is changed
+useEffect(() => {
+console.log("userinfo refreshed in Navbar", userinfo?.name);
+}, [userinfo,updatedis]);
 
 
 const handleKeyDown =(e) => {

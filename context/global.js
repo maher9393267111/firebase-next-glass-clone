@@ -60,6 +60,7 @@ const AuthContext = ({ children }) => {
   const [carbarsend, setCarbarsend] = useState([]);
   const [totalprice,setTotalprice] = useState(0);
   const [searchkyword,setSearchkyword] = useState("");
+  const [updatedis,setUpdatedis] = useState(false);
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -541,15 +542,33 @@ const updateUserInfo = async (userinfo) => {
 
   await updateDoc(userpath, {
     ...userinfo,
-  }).then(() => {
-
-    console.log("user info updated successfully");
+  }).then(async() => {
+console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
+    // after udpate user info in firebase set it to the state
+  const userafterupdated = await (await getDoc(userpath)).data()?.userinfo;
+  setUserinfo(userafterupdated);
+  setUpdatedis(!updatedis);
+  console.log('userinfo after update DATA', userinfo?.name);
   });
    
 
-  // after udpate user info in firebase set it to the state
-  const userafterupdated = await (await getDoc(userpath)).data()?.userinfo;
-  setUserinfo(userafterupdated);
+  
+  // refresh userinfo when update profile
+
+  // useEffect(() => {
+
+
+  //    refreshprofile = async () => {
+  //     const userpath = doc(db, "users", `${userinfo?.email}`);
+  //     const userinfo = await (await getDoc(userpath)).data()?.userinfo;
+  //     setUserinfo(userinfo);
+  //   }
+  //   refreshprofile();
+    
+  // } , [userinfo,updatedis]);
+
+
+
 
 
 
@@ -594,7 +613,7 @@ const updateUserInfo = async (userinfo) => {
     totalprice,
     deleteProductfromCart ,
     searchkyword,setSearchkyword,
-    updateUserInfo
+    updateUserInfo, setUpdatedis, updatedis,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

@@ -9,12 +9,24 @@ import AllContext from '../context/diff';
 import Cartbar from '../components/cartbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { wrapper } from "../store/index";
+
+// import dispatch from redux:
+import { useDispatch } from "react-redux";
+
 function MyApp({ Component, pageProps }) {
+
+
+
+
+
+
 
 return (
 
 
- 
+  // <Provider store={initializeStore}>
        <AuthContext>
         <AllContext>
       
@@ -31,13 +43,14 @@ return (
 
   </AuthContext>
 
+  // </Provider>
   
  
 
   )
 }
 
-export default MyApp
+export default wrapper.withRedux( MyApp);
 
 
 

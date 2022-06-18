@@ -68,8 +68,10 @@ const UserEditForm = ({ coverimage, userimage }) => {
       password,
       email,
       adress,
-      coverimage: responsecover  ? responsecover : 'https://i.pinimg.com/originals/30/5c/5a/305c5a457807ba421ed67495c93198d3.jpg',
-      image:  responsesuer ? responsesuer : userinfo?.image,
+      coverimage: responsecover  ,
+    //   responsecover : 'https://i.pinimg.com/originals/30/5c/5a
+    //   305c5a457807ba421ed67495c93198d3.jpg',
+      image:  responsesuer  ,
     };
 
     console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀',userobject);
