@@ -11,7 +11,7 @@ const ProductMaincart = ({product}) => {
 <div
 className ='w-full h-[255px]'>
 
- <Link href={`/${product.id}`}>
+ <Link href={`/product/${product.id}`}>
 <img 
 className=' w-full h-full    transition-all  duration-200    hover:rotate-6'
 src={product.images[0].image} alt="" />

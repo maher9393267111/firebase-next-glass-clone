@@ -35,7 +35,7 @@ import { useContext } from "react";
 import { createContext } from "react";
 import { auth, db } from "../firebase";
 import {fetchUserInfo} from '../store/actions';
-import {  setUserInfo } from '../store/global';
+import {  setUserInfo,fetchsingleProduct } from '../store/global';
 import { useDispatch } from "react-redux";
 
 const authContext = createContext();

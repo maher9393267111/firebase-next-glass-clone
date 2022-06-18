@@ -16,7 +16,8 @@ const authSlice = createSlice({
         isLoggedIn: false,
         isAuthLoading: false,
         user: {},
-        name:'maher'
+        name:'maher',
+        singleproduct: {},
     },
     reducers: {
         setIsLoggedIn: (state, action) => {
@@ -28,6 +29,11 @@ const authSlice = createSlice({
         setUserInfo: (state, action) => {
             console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀 Action Payload------>',action.payload);
             state.user = action.payload;
+        },
+
+        fetchsingleProduct: (state, action) => {
+console.log()
+            state.singleproduct = action.payload;
         }
     },
     // extraReducers: {
@@ -52,5 +58,5 @@ const authSlice = createSlice({
 
 
 // Export our slice and the action types:
-export const { setIsLoggedIn, setname,    setUserInfo } = authSlice.actions;
+export const { setIsLoggedIn, setname,    setUserInfo,fetchsingleProduct } = authSlice.actions;
 export default authSlice.reducer;
