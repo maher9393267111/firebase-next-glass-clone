@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Link from 'next/link';
 const ProductMaincart = ({product}) => {
     return (
         <div>
@@ -11,9 +11,11 @@ const ProductMaincart = ({product}) => {
 <div
 className ='w-full h-[255px]'>
 
+ <Link href={`/${product.id}`}>
 <img 
 className=' w-full h-full    transition-all  duration-200    hover:rotate-6'
 src={product.images[0].image} alt="" />
+</Link>
 </div>
 
 {/* info- */}

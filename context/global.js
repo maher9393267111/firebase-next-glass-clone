@@ -68,6 +68,7 @@ const AuthContext = ({ children }) => {
   const [totalprice,setTotalprice] = useState(0);
   const [searchkyword,setSearchkyword] = useState("dene");
   const [updatedis,setUpdatedis] = useState(false);
+  const [oneproduct, setoneproduct] = useState({});
 
   const signUp = async (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password);
@@ -561,26 +562,21 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
   });
    
 
-  
-  // refresh userinfo when update profile
-
-  // useEffect(() => {
 
 
-  //    refreshprofile = async () => {
-  //     const userpath = doc(db, "users", `${userinfo?.email}`);
-  //     const userinfo = await (await getDoc(userpath)).data()?.userinfo;
-  //     setUserinfo(userinfo);
-  //   }
-  //   refreshprofile();
-    
-  // } , [userinfo,updatedis]);
+}
 
 
 
+const singleproduct = async (productid) => {
 
 
-
+  const productpath = doc(db, "products", productid);
+  getDoc(productpath).then((doc) => {
+    console.log("product is fetchd from firebase----->", doc.data());
+    setoneproduct(doc.data());
+  }
+  );
 
 }
 
@@ -622,7 +618,7 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
     totalprice,
     deleteProductfromCart ,
     searchkyword,setSearchkyword,
-    updateUserInfo, setUpdatedis, updatedis, dene
+    updateUserInfo, setUpdatedis, updatedis, dene, singleproduct ,oneproduct, setoneproduct
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };
