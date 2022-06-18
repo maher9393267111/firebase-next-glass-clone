@@ -32,26 +32,26 @@ const UserEditForm = ({ coverimage, userimage }) => {
   const handlesubmit = async (e) => {
     e.preventDefault();
 
-    const imageRef = ref(storage, `users/${userinfo?.name}/coverimage`);
+//     const imageRef = ref(storage, `users/${userinfo?.name}/coverimage`);
 
-    if (coverimage) {
-   //   console.log("coverimage well uploaded");
-      await uploadString(imageRef, coverimage, "data_url").then(async () => {
-        const coverURL = await getDownloadURL(imageRef);
-        setResponsecover(coverURL);
-      });
-    }
+//     if (coverimage) {
+//    //   console.log("coverimage well uploaded");
+//       await uploadString(imageRef, coverimage, "data_url").then(async () => {
+//         const coverURL = await getDownloadURL(imageRef);
+//         setResponsecover(coverURL);
+//       });
+//     }
 
-   // console.log("coverimage🚀🚀🚀🚀🚀🚀🚀🚀🚀", responsecover);
-    const userimageRef = ref(storage, `users/${userinfo?.name}/userimage`);
+//    // console.log("coverimage🚀🚀🚀🚀🚀🚀🚀🚀🚀", responsecover);
+//     const userimageRef = ref(storage, `users/${userinfo?.name}/userimage`);
 
-    if (userimage) {
-     // console.log("userimage well uploaded");
-      await uploadString(userimageRef, userimage, "data_url").then(async () => {
-        const userURL = await getDownloadURL(userimageRef);
-        setResponseimage(userURL);
-      });
-    }
+//     if (userimage) {
+//      // console.log("userimage well uploaded");
+//       await uploadString(userimageRef, userimage, "data_url").then(async () => {
+//         const userURL = await getDownloadURL(userimageRef);
+//         setResponseimage(userURL);
+//       });
+//     }
 
 
 
@@ -68,10 +68,9 @@ const UserEditForm = ({ coverimage, userimage }) => {
       password,
       email,
       adress,
-      coverimage: responsecover  ,
-    //   responsecover : 'https://i.pinimg.com/originals/30/5c/5a
-    //   305c5a457807ba421ed67495c93198d3.jpg',
-      image:  responsesuer  ,
+      coverimage: coverimage ,
+  
+      image:  userimage  ,
     };
 
     console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀',userobject);

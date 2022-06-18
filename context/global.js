@@ -14,6 +14,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 
+
 import {
   doc,
   setDoc,
@@ -33,6 +34,8 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import { auth, db } from "../firebase";
+import {fetchUserInfo} from '../store/actions';
+import { useDispatch } from "react-redux";
 
 const authContext = createContext();
 
@@ -41,6 +44,8 @@ export const useAuth = () => {
 };
 
 const AuthContext = ({ children }) => {
+
+  const dispatch = useDispatch();
   const [currentUser, setUser] = useState({});
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
@@ -548,6 +553,7 @@ console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
   const userafterupdated = await (await getDoc(userpath)).data()?.userinfo;
   setUserinfo(userafterupdated);
   setUpdatedis(!updatedis);
+  dispatch(fetchUserInfo(userafterupdated));
   console.log('userinfo after update DATA', userinfo?.name);
   });
    

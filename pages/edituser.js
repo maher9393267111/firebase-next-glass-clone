@@ -61,11 +61,7 @@ const Edituser = () => {
     coverimageref.current.click();
   };
 
-const changename = (e) => {
-e.preventDefault();
-dispatch(setname('hhhhhhhhhhh'))
 
-}
 
 
 
@@ -75,9 +71,9 @@ dispatch(setname('hhhhhhhhhhh'))
         {/* ---cover- */}
 
         <div
-        onClick={changename}
+        
         className="image-cover">
-            {name}
+            
           <div className=" relative">
 
 {! userinfo?.coverimage ? 
