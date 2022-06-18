@@ -20,7 +20,7 @@ className=' w-18 h-18'
 >
 <img
 className=' w-16 h-16   rounded-full'
-src={item.image} alt="" />
+src={item?.image} alt="" />
 </div>
 
 

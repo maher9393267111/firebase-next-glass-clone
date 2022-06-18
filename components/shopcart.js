@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/global";
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
+;
 
 const Shopcart = ({ product }) => {
   const {
@@ -14,34 +14,40 @@ const Shopcart = ({ product }) => {
     refreshcart,
     carbarsend,
   } = useAuth();
+
+//---------------------------------------------
+
+const handleproductid = async (product) => {
+  // onlysend on colorwith his images  to acart
+
+  const selecteditems = {};
+
+  selecteditems.id = product.id;
+  selecteditems.name = product.name;
+  selecteditems.price = product.price;
+  selecteditems.image = product.images[0].image;
+  selecteditems.color = product.images[0].color;
+  selecteditems.category = product.category;
+  selecteditems.title = product.title;
+
+  await addtocart(selecteditems);
+  await setRefreshcart(!refreshcart);
+
+  setProductid(product.id);
+
+  console.log(carbarsend.length);
+
+  toast.success(`${carbarsend.length} items  in cart`);
+};
+
+
+
+
+//---------------------------------------------
+
+
   const [incart, setincart] = useState(false);
 
-  const handleproductid = async (product) => {
-
-// onlysend on colorwith his images  to acart
-
-const selecteditems= {}
-
-selecteditems.id = product.id;
-selecteditems.name = product.name;
-selecteditems.price = product.price;
-selecteditems.image = product.images[0].image;
-selecteditems.color = product.images[0].color;
-selecteditems.category = product.category;
-selecteditems.title = product.title;
-
-
-
-
-    await addtocart(selecteditems);
-    await setRefreshcart(!refreshcart);
-
-    setProductid(product.id);
-
-    console.log(carbarsend.length);
-
-    toast.success(`${carbarsend.length} items  in cart`);
-  };
 
   useEffect(() => {
     if (carbarsend?.length > 0) {
@@ -58,18 +64,23 @@ selecteditems.title = product.title;
     }
   }, [carbarsend]);
 
+
+
+
   return (
     <div className="  w-[333px] h-[288px]   overflow-y-hidden border-2 border-blue-600">
       <div class="card  bg-slate-400">
         <div class="cardTop">
-          <img className="h-full w-full" src={product?.images[0]?.image} alt="" />
+          <img
+            className="h-full w-full"
+            src={product?.images[0]?.image}
+            alt=""
+          />
         </div>
         <div class="cardBottom">
           <div class="cardText">
             {/* <!--       Title and description will always show --> */}
-            <h3 class="cardTitle">
-              {product?.name} 
-            </h3>
+            <h3 class="cardTitle">{product?.name}</h3>
             <h4 class="cardInfo">
               {product?.category} {usercart?.length}
             </h4>

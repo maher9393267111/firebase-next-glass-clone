@@ -14,7 +14,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-
 import {
   doc,
   setDoc,
@@ -34,8 +33,8 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import { auth, db } from "../firebase";
-import {fetchUserInfo} from '../store/actions';
-import {  setUserInfo,fetchsingleProduct } from '../store/global';
+import { fetchUserInfo } from "../store/actions";
+import { setUserInfo, fetchsingleProduct } from "../store/global";
 import { useDispatch } from "react-redux";
 
 const authContext = createContext();
@@ -45,13 +44,12 @@ export const useAuth = () => {
 };
 
 const AuthContext = ({ children }) => {
-
   const dispatch = useDispatch();
   const [currentUser, setUser] = useState({});
   const [userinfo, setUserinfo] = useState({});
   const [reg, setreg] = useState(false);
   const [products, setProducts] = useState([]);
-  const [dene,setdene ] = useState('');
+  const [dene, setdene] = useState("");
   const [filterarray, setFilterarray] = useState({
     category: "",
     minprice: 0,
@@ -65,9 +63,9 @@ const AuthContext = ({ children }) => {
   const [checexist, setChecexist] = useState(false);
   const [refreshcart, setRefreshcart] = useState(false);
   const [carbarsend, setCarbarsend] = useState([]);
-  const [totalprice,setTotalprice] = useState(0);
-  const [searchkyword,setSearchkyword] = useState("dene");
-  const [updatedis,setUpdatedis] = useState(false);
+  const [totalprice, setTotalprice] = useState(0);
+  const [searchkyword, setSearchkyword] = useState("dene");
+  const [updatedis, setUpdatedis] = useState(false);
   const [oneproduct, setoneproduct] = useState({});
 
   const signUp = async (email, password, name) => {
@@ -336,33 +334,29 @@ const AuthContext = ({ children }) => {
 
       await updateDoc(userpath, {
         cart: [...cart, product],
-        totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
-      }).then(async() => {
+        totalprice: cart?.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
+      }).then(async () => {
         const cart = await (await getDoc(userpath)).data()?.cart;
-        // update totla price 
+        // update totla price
         await updateDoc(userpath, {
-          totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
-        })
-
-
-      })
-
-
-
+          totalprice: cart?.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0
+          ),
+        });
+      });
 
       setChecexist(true);
 
-  // total price of the cart
-  const totalpriced = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }
-    , 0);
-  setTotalprice(totalpriced);
-  console.log("totalprice when addddddd to cart -------->", totalprice);
-
-
-
-
+      // total price of the cart
+      const totalpriced = cart.reduce((acc, item) => {
+        return acc + item.price * item.quantity;
+      }, 0);
+      setTotalprice(totalpriced);
+      console.log("totalprice when addddddd to cart -------->", totalprice);
     }
 
     // if exist.length is not 0 and product is exist in the cart  //
@@ -371,7 +365,10 @@ const AuthContext = ({ children }) => {
 
       await updateDoc(userpath, {
         cart: cart?.filter((item) => item.id !== product.id), // delete product from cart if exist
-        totalprice:  cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) ,
+        totalprice: cart?.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
 
         // onother option  increase the quantity of the product if exist
 
@@ -385,16 +382,12 @@ const AuthContext = ({ children }) => {
         // }),
       });
 
-
-   // total price of the cart
- const totalpriced = cart.reduce((acc, item) => {
-  return acc + item.price * item.quantity;
-}
-  , 0);
-setTotalprice(totalpriced);
-console.log("totalprice when addddddd to cart -------->", totalprice);
-
-
+      // total price of the cart
+      const totalpriced = cart.reduce((acc, item) => {
+        return acc + item.price * item.quantity;
+      }, 0);
+      setTotalprice(totalpriced);
+      console.log("totalprice when addddddd to cart -------->", totalprice);
     }
   };
 
@@ -455,133 +448,103 @@ console.log("totalprice when addddddd to cart -------->", totalprice);
         return item;
       }),
 
-totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
-
+      totalprice: cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      ),
     });
 
     setusercart(cart);
 
- // total price of the cart
- const totalpriced = cart.reduce((acc, item) => {
-  return acc + item.price * item.quantity;
-}
-  , 0);
-setTotalprice(totalpriced);
-console.log("totalprice-------->", totalprice);
-
-
-
-
+    // total price of the cart
+    const totalpriced = cart.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+    setTotalprice(totalpriced);
+    console.log("totalprice-------->", totalprice);
   };
 
+  //- decrtease the quantity of the product and update in firebase
 
-//- decrtease the quantity of the product and update in firebase
+  const decreaseQuantity = async (product) => {
+    const userpath = doc(db, "users", `${userinfo?.email}`);
 
-const decreaseQuantity = async (product) => {
-  const userpath = doc(db, "users", `${userinfo?.email}`);
-
-  const cart = await (await getDoc(userpath)).data()?.cart;
-
-  await updateDoc(userpath, {
-    cart: cart.map((item) => {
-      if (item.id === product.id) {
-
-if (item.quantity > 1) {
-  item.quantity -= 1;
-
-}
-
-else {
-  item.quantity = 1;
-}
-        
-      }
-      return item;
-    }),
-    totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
-  });
-
-  setusercart(cart);
-
-  // total price of the cart
-  const totalpriced = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }
-    , 0);
-  setTotalprice(totalpriced);
-  console.log("totalprice when decrease-------->", totalprice);
-
-
-
-};
-
-
-
-// delete the product from the cart and update in firebase
-
-const deleteProductfromCart = async (product) => {  
-
-const userpath = doc(db, "users", `${userinfo?.email}`);
-
-const cart = await (await getDoc(userpath)).data()?.cart;
-
-  await updateDoc(userpath, {
-    cart: cart.filter((item) => item.id !== product.id),
-    totalprice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
-  }).then(async() => {
     const cart = await (await getDoc(userpath)).data()?.cart;
 
+    await updateDoc(userpath, {
+      cart: cart.map((item) => {
+        if (item.id === product.id) {
+          if (item.quantity > 1) {
+            item.quantity -= 1;
+          } else {
+            item.quantity = 1;
+          }
+        }
+        return item;
+      }),
+      totalprice: cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      ),
+    });
 
-    console.log("cart after delete", cart.length);
     setusercart(cart);
-  } );
 
+    // total price of the cart
+    const totalpriced = cart.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+    setTotalprice(totalpriced);
+    console.log("totalprice when decrease-------->", totalprice);
+  };
 
-}
+  // delete the product from the cart and update in firebase
 
+  const deleteProductfromCart = async (product) => {
+    const userpath = doc(db, "users", `${userinfo?.email}`);
 
+    const cart = await (await getDoc(userpath)).data()?.cart;
 
-// update user info in firebase
+    await updateDoc(userpath, {
+      cart: cart.filter((item) => item.id !== product.id),
+      totalprice: cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      ),
+    }).then(async () => {
+      const cart = await (await getDoc(userpath)).data()?.cart;
 
-const updateUserInfo = async (userinfo) => {
+      console.log("cart after delete", cart.length);
+      setusercart(cart);
+    });
+  };
 
+  // update user info in firebase
 
-  const userpath = doc(db, "users", `${userinfo?.email}`);
+  const updateUserInfo = async (userinfo) => {
+    const userpath = doc(db, "users", `${userinfo?.email}`);
 
-  await updateDoc(userpath, {
-    ...userinfo,
-  }).then(async() => {
-console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
-    // after udpate user info in firebase set it to the state
-  const userafterupdated = await (await getDoc(userpath)).data();
-  setUserinfo(userafterupdated);
-  setUpdatedis(!updatedis);
-  dispatch(setUserInfo(userafterupdated));
-  setdene(userafterupdated?.name);
-  console.log('userinfo after update DATA', userinfo?.name);
-  });
-   
+    await updateDoc(userpath, {
+      ...userinfo,
+    }).then(async () => {
+      console.log("user info updated THen🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀");
+      // after udpate user info in firebase set it to the state
+      const userafterupdated = await (await getDoc(userpath)).data();
+      setUserinfo(userafterupdated);
+      setUpdatedis(!updatedis);
+      dispatch(setUserInfo(userafterupdated));
+      setdene(userafterupdated?.name);
+      console.log("userinfo after update DATA", userinfo?.name);
+    });
+  };
 
-
-
-}
-
-
-
-const singleproduct = async (productid) => {
-
-
-  const productpath = doc(db, "products", productid);
-  getDoc(productpath).then((doc) => {
-    console.log("product is fetchd from firebase----->", doc.data());
-    setoneproduct(doc.data());
-  }
-  );
-
-}
-
-
-
+  const singleproduct = async (productid) => {
+    const productpath = doc(db, "products", productid);
+    getDoc(productpath).then((doc) => {
+      console.log("product is fetchd from firebase----->", doc.data());
+      setoneproduct(doc.data());
+    });
+  };
 
   const value = {
     signUp,
@@ -616,9 +579,16 @@ const singleproduct = async (productid) => {
     decreaseQuantity,
     setTotalprice,
     totalprice,
-    deleteProductfromCart ,
-    searchkyword,setSearchkyword,
-    updateUserInfo, setUpdatedis, updatedis, dene, singleproduct ,oneproduct, setoneproduct
+    deleteProductfromCart,
+    searchkyword,
+    setSearchkyword,
+    updateUserInfo,
+    setUpdatedis,
+    updatedis,
+    dene,
+    singleproduct,
+    oneproduct,
+    setoneproduct,
   };
   return <authContext.Provider {...{ value }}>{children}</authContext.Provider>;
 };

@@ -9,6 +9,8 @@ import AllContext from '../context/diff';
 import Cartbar from '../components/cartbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'antd/dist/antd.css'
+import SubContext from '../context/sub'
 
 import { wrapper } from "../store/index";
 
@@ -29,6 +31,7 @@ return (
   // <Provider store={initializeStore}>
        <AuthContext>
         <AllContext>
+        <SubContext>
       
         <Navbar/>
         <ToastContainer
@@ -39,6 +42,7 @@ return (
         <FilterModal/>
   <Component {...pageProps} />
 
+        </SubContext>
         </AllContext>
 
   </AuthContext>
