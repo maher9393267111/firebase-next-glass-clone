@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Showingproducts from "../../components/Showingproducts";
 import {
   doc,
   collection,
@@ -239,6 +240,18 @@ const Product = ({ id }) => {
             </div>
           </div>
         </div>
+
+
+        <div className=" mt-12 pb-12">
+
+
+<Showingproducts productsnumber={8}  title={'Recommended Products'} />
+
+
+
+</div>
+
+
       </div>
     </div>
   );

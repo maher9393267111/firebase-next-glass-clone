@@ -54,7 +54,7 @@ console.log("userdata **---------**", userdata);
 
   return (
     <div>
-        {userdata?.cart.length }
+        {userdata?.cart?.length }
       <div className=" mt-16 w-[55%] mx-auto">
         <Steps current={current}>
           {steps.map((item) => (
